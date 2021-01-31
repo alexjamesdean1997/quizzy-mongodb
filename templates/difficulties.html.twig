@@ -1,0 +1,23 @@
+{% extends 'common.html.twig' %}
+{% block body %}
+    <main class="container">
+        <h1 class="title">Quiz</h1>
+        <h2 class="subtitle">{{ category }}</h2>
+        <div class="subtitle subtitle--small">Choisissez une difficulté</div>
+
+        <ul class="difficulties">
+            <li class="difficulty">
+                <a class="btn btn--fw btn--outline" href="/quiz/{{ category }}/easy">Débutant</a>
+            </li>
+            <li class="difficulty">
+                <a class="btn btn--fw btn--outline" href="/quiz/{{ category }}/confirmed">Confirmé</a>
+            </li>
+            <li class="difficulty">
+                <a class="btn btn--fw btn--outline" href="/quiz/{{ category }}/expert">Expert</a>
+            </li>
+            <li class="difficulty">
+                <a class="btn btn--fw btn--outline" href="/quiz/{{ category }}/all">Toutes les difficultés</a>
+            </li>
+        </ul>
+    </main>
+{% endblock %}

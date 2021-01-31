@@ -1,0 +1,36 @@
+{% extends 'common.html.twig' %}
+{% block body %}
+    <main class="container">
+        <h1 class="title">Quizzy</h1>
+        <div class="counter"></div>
+        <div class="status">
+            <h2>Database</h2>
+            <div  style="display: flex; justify-content: space-between; padding-right: 200px;">
+                <div>
+                    <h3>Added</h3>
+                    <div class="new"></div>
+                </div>
+                <div>
+                    <h3>Duplicates</h3>
+                    <div class="duplicate"></div>
+                </div>
+                <div>
+                    <h3>success rate</h3>
+                    <div class="success"></div>
+                </div>
+                <div>
+                    <h3>too many requests</h3>
+                    <div class="blocked"></div>
+                </div>
+            </div>
+        </div>
+        <h2>Categories</h2>
+        <ul class="categories-list">
+
+        </ul>
+        <h2>new questions</h2>
+        <ul class="questions">
+
+        </ul>
+    </main>
+{% endblock %}

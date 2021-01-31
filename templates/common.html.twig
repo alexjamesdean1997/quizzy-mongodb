@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Quizzy{% endblock %}</title>
+    <meta name="description" content="{% block description %}Quiz progressive web app{% endblock %}"/>
+    <link rel="icon" type="image/jpg" href="{{ asset('build/favicon.png') }}" />
+    <link rel="canonical" href="{{ app.request.uri }}">
+
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+</head>
+<body>
+<header>
+    <div class="header-wrapper">
+        <div class="logo">
+            <img src="{{ asset('build/logo-quizzy.png') }}" alt="Quizzy logo">
+        </div>
+        <div class="quizzy">Quizzy</div>
+    </div>
+</header>
+
+<nav class="mobile-menu">
+    <ul class="mobile-menu-wrapper">
+        <li>
+            <a href="/dashboard">
+                <img src="{{ asset('build/dashboard.svg') }}" alt="dashboard icon">
+            </a>
+        </li>
+        <li>
+            <a href="/quiz">
+                <img src="{{ asset('build/quiz.svg') }}" alt="quiz icon">
+            </a>
+        </li>
+        <li>
+            <a href="/stats">
+                <img src="{{ asset('build/stats.svg') }}" alt="stats icon">
+            </a>
+        </li>
+        <li>
+            <a href="/leaderboard">
+                <img src="{{ asset('build/leaderboard.svg') }}" alt="leaderboard icon">
+            </a>
+        </li>
+    </ul>
+</nav>
+
+{% block body %}{% endblock %}
+
+</body>
+{% block footer %}
+    <footer class="container">
+    </footer>
+{% endblock %}
+{% block javascripts %}{% endblock %}
+{{ encore_entry_script_tags('app') }}
+</html>

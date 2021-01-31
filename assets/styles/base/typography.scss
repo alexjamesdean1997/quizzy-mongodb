@@ -1,0 +1,70 @@
+// fonts
+@font-face {
+  font-family: "Grold";
+  src: url("./../../fonts/Grold-Regular.otf");
+  font-weight: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Grold";
+  src: url("./../../fonts/Grold-ExtraBold.otf");
+  font-weight: bold;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Grold";
+  src: url("./../../fonts/Grold-Light.otf");
+  font-weight: 100;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Grold";
+  src: url("./../../fonts/Grold-Medium.otf");
+  font-weight: 600;
+  font-display: swap;
+}
+
+body{
+  font-family: 'Grold', sans-serif;
+}
+
+.title{
+  font-family: 'Grold', sans-serif;
+  font-weight: 600;
+  font-size: 30px;
+  padding: 12px 0;
+  margin: 0;
+  color: $blue;
+
+  &--big{
+    font-size: 70px;
+  }
+}
+
+.subtitle{
+  font-family: 'Grold', sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  padding: 12px 0;
+  margin: 0;
+  color: $dark;
+
+  &:first-letter {
+    text-transform: capitalize
+  }
+
+  &--small{
+    font-weight: 100;
+    font-size: 18px;
+  }
+}
+
+.text{
+  font-family: 'Grold', sans-serif;
+  font-size: 1rem;
+  color: $dark;
+
+  &--bold{
+    font-weight: 600;
+  }
+}

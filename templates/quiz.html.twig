@@ -1,0 +1,70 @@
+{% extends 'common.html.twig' %}
+{% block body %}
+    <main class="container">
+        <h1 class="title">Quiz</h1>
+        <h2 class="subtitle">Choisissez une categorie</h2>
+
+        <section class="categories">
+            <a href="/quiz/aleatoire" class="category random">
+                <img src="{{ asset('build/shuffle.svg') }}" alt="shuffle icon">
+                Aléatoire
+            </a>
+            <a href="/quiz/animaux" class="category animals">
+                <img src="{{ asset('build/cat.svg') }}" alt="cat icon">
+                Animaux
+            </a>
+            <a href="/quiz/celebrites" class="category celebs">
+                <img src="{{ asset('build/star.svg') }}" alt="star icon">
+                Célébrités
+            </a>
+            <a href="/quiz/cinema" class="category films">
+                <img src="{{ asset('build/film.svg') }}" alt="film icon">
+                Cinéma
+            </a>
+            <a href="/quiz/culture" class="category knowledge">
+                <img src="{{ asset('build/book.svg') }}" alt="book icon">
+                Culture
+            </a>
+            <a href="/quiz/geographie" class="category geo">
+                <img src="{{ asset('build/globe.svg') }}" alt="globe icon">
+                Géographie
+            </a>
+            <a href="/quiz/histoire" class="category history">
+                <img src="{{ asset('build/feather.svg') }}" alt="feather icon">
+                Histoire
+            </a>
+            <a href="/quiz/litterature" class="category books">
+                <img src="{{ asset('build/book-open.svg') }}" alt="book-open icon">
+                Littérature
+            </a>
+            <a href="/quiz/musique" class="category music">
+                <img src="{{ asset('build/music.svg') }}" alt="music icon">
+                Musique
+            </a>
+            <a href="/quiz/nature" class="category nature">
+                <img src="{{ asset('build/tree.svg') }}" alt="tree icon">
+                Nature
+            </a>
+            <a href="/quiz/quotidien" class="category daily">
+                <img src="{{ asset('build/calendar.svg') }}" alt="calendar icon">
+                Quotidien
+            </a>
+            <a href="/quiz/sciences" class="category science">
+                <img src="{{ asset('build/activity.svg') }}" alt="activity icon">
+                Sciences
+            </a>
+            <a href="/quiz/sports" class="category sports">
+                <img src="{{ asset('build/sport.svg') }}" alt="sport icon">
+                Sports
+            </a>
+            <a href="/quiz/tech" class="category tech">
+                <img src="{{ asset('build/cpu.svg') }}" alt="cpu icon">
+                Tech
+            </a>
+            <a href="/quiz/television" class="category tv">
+                <img src="{{ asset('build/tv.svg') }}" alt=" icon">
+                Télévision
+            </a>
+        </section>
+    </main>
+{% endblock %}

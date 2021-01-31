@@ -1,0 +1,50 @@
+$elementSeparator: '__';
+$modifierSeparator: '--';
+
+@mixin element($element) {
+  @at-root {
+    #{&}#{$elementSeparator+$element} {
+      @content;
+    }
+  }
+}
+
+@mixin modifier($modifier) {
+  @at-root {
+    #{&}#{$modifierSeparator+$modifier} {
+      @content;
+    }
+  }
+}
+
+$max: 20;
+$offset: 1;
+$unit: 'rem'; // Feel free to change the unit.
+
+@mixin list-loop($className, $styleName) {
+  $i: 0;
+  @while $i <= $max {
+    #{$className + $i} {
+      #{$styleName}: #{$i + $unit}!important;
+
+      @media screen and (max-width: 768px) {
+        #{$styleName}: #{$i / 2 + $unit}!important;
+      }
+    }
+    $i: $i + $offset;
+  }
+}
+
+// Margins
+@include list-loop('.mt-', 'margin-top');
+@include list-loop('.mr-', 'margin-right');
+@include list-loop('.mb-', 'margin-bottom');
+@include list-loop('.ml-', 'margin-left');
+@include list-loop('.m-', 'margin');
+
+// Paddings
+@include list-loop('.pt-', 'padding-top');
+@include list-loop('.pr-', 'padding-right');
+@include list-loop('.pb-', 'padding-bottom');
+@include list-loop('.pl-', 'padding-left');
+@include list-loop('.p-', 'padding');

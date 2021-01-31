@@ -1,0 +1,38 @@
+.user-stats{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+
+  .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    color: $dark;
+    padding: 16px 12px 12px;
+    border-radius: 8px;
+    background-color: white;
+    width: calc(30% - 20px);
+    margin-bottom: 10px;
+    font-weight: 400;
+    text-decoration: none;
+    text-align: center;
+    box-shadow: 0 0 22px #00000009;
+
+    .label{
+      font-size: 14px;
+      padding-bottom: 6px;
+    }
+
+    .number{
+      font-size: 30px;
+      font-weight: 600;
+      color: $blue;
+
+      span{
+        font-weight: 100;
+        font-size: 14px;
+      }
+    }
+  }
+}
