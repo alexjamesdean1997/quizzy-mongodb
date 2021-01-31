@@ -121,7 +121,7 @@ function saveQuestion(data) {
 
         },
         error : function(xhr, textStatus, errorThrown) {
-            console.log('failed to navigate calendar');
+            console.log('failed to compare question in db');
         }
     });
 

@@ -1,7 +1,11 @@
 security:
+    encoders:
+        App\Document\Users:
+            algorithm: auto
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        users_in_memory: { memory: null }
+        my_mongo_provider:
+            mongodb: {class: App\Document\Users, property: email}
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -9,7 +13,14 @@ security:
         main:
             anonymous: true
             lazy: true
-            provider: users_in_memory
+            provider: my_mongo_provider
+            guard:
+                authenticators:
+                    - App\Security\LoginFormAuthenticator
+            logout:
+                path: app_logout
+                # where to redirect after logout
+                # target: app_any_route
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
