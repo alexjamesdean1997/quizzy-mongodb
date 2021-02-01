@@ -44,6 +44,24 @@ class QuizController extends AbstractController
     }
 
     /**
+     * @Route("/getcorrectanswers/ajax", name="get_correct_answers")
+     */
+    public function getCorrectAnswers(Request $request, DocumentManager $dm)
+    {
+        $questionRepository = $dm->getRepository(Questions::class);
+
+        $questionId = json_decode($request->query->get('data'), true);
+
+        $answer = $questionRepository->find($questionId)->getCorrectAnswer();
+
+        $response = array(
+            "code" => 200,
+            "answer" => $answer
+        );
+        return new JsonResponse($response);
+    }
+
+    /**
      * @Route("/quiz/{category}/{difficulty}", name="quiz_category")
      */
     public function category(DocumentManager $dm, $category, $difficulty)
@@ -119,23 +137,6 @@ class QuizController extends AbstractController
         return $sessionQuestions;
     }
 
-
-    /**
-     * @Route("/getcorrectanswers/ajax", name="get_correct_answers")
-     */
-    public function getCorrectAnswers(Request $request, QuestionRepository $questionRepository)
-    {
-
-        $questionId = json_decode($request->query->get('data'), true);
-
-        $answer = $questionRepository->find($questionId)->getCorrectAnswer();
-
-        $response = array(
-            "code" => 200,
-            "answer" => $answer
-        );
-        return new JsonResponse($response);
-    }
 
     /**
      * @Route("/saveanswer/ajax", name="save_answer")

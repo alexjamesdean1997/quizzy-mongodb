@@ -4,12 +4,17 @@
 namespace App\Document;
 
 use Doctrine\Bundle\MongoDBBundle\Validator\Constraints\Unique as MongoDBUnique;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\EmbeddedDocument;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\EmbedMany;
+use Doctrine\ODM\MongoDB\Mapping\Annotations\EmbedOne;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @MongoDB\Document(collection="users")
+ * @MongoDB\Document(collection="Users")
  * @MongoDBUnique(fields="email")
  */
 class Users implements UserInterface
@@ -62,9 +67,23 @@ class Users implements UserInterface
      */
     private $avatar;
 
+    /**
+     * @EmbedMany(targetDocument=Answer::class)
+     */
+    private $answer;
+
     public function __construct()
     {
+        $this->answer = new ArrayCollection();
         $this->created_at= new \DateTime();
+    }
+
+    public function getAnswers(): Collection {
+        return $this->answer;
+    }
+
+    public function addAnswer(Answer $answer): void {
+        $this->answer[] = $answer;
     }
 
     public function getId()

@@ -47,7 +47,7 @@ $(document).ready(function(){
 
             let questionId = $('.question-wrapper[data-question="' + currentQuestion + '"]').data('qid');
             let answer = $('.quiz-choice.selected').data('value');
-            saveAnswer(questionId, answer);
+            //saveAnswer(questionId, answer);
             getCorrectAnswer(questionId);
         }
     });
