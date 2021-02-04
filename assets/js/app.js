@@ -45,10 +45,10 @@ $(document).ready(function(){
             }
         }else{
 
+            let questionOid = $('.question-wrapper[data-question="' + currentQuestion + '"]').data('qoid');
             let questionId = $('.question-wrapper[data-question="' + currentQuestion + '"]').data('qid');
             let answer = $('.quiz-choice.selected').data('value');
-            //saveAnswer(questionId, answer);
-            getCorrectAnswer(questionId);
+            getCorrectAnswer(questionOid, questionId, answer);
         }
     });
 });
@@ -127,17 +127,17 @@ function saveQuestion(data) {
 
 }
 
-function getCorrectAnswer(questionId) {
+function getCorrectAnswer(questionOid, questionId, answer) {
 
     $.ajax({
-        url:        '/getcorrectanswers/ajax?data=' + JSON.stringify(questionId),
+        url:        '/getcorrectanswers/ajax?data=' + JSON.stringify(questionOid),
         type:       'POST',
         dataType:   'json',
         async:      true,
 
         success: function(data, status) {
             let correctAnswer = data.answer;
-            manageResult(correctAnswer);
+            manageResult(correctAnswer, questionId, answer);
         },
         error : function(xhr, textStatus, errorThrown) {
             console.log('failed to get question correct answer');
@@ -145,12 +145,15 @@ function getCorrectAnswer(questionId) {
     });
 }
 
-function saveAnswer(questionId, answer) {
+function saveAnswer(questionId, category, score) {
 
     let data = {
         questionId : questionId,
-        answer : answer
+        category : category,
+        score : score
     };
+
+    console.log('save answer');
 
     $.ajax({
         url:        '/saveanswer/ajax?data=' + JSON.stringify(data),
@@ -167,23 +170,41 @@ function saveAnswer(questionId, answer) {
     });
 }
 
-function manageResult(correctAnswer){
+function manageResult(correctAnswer, questionId, answer){
     console.log('MANAGER');
-    let selectedChoiceValue = $('.quiz-choice.selected').data('value');
     console.log({correctAnswer});
-    console.log({selectedChoiceValue});
+    console.log({answer});
+    let difficulty = $('.question-wrapper[data-question="' + currentQuestion + '"]').data('difficulty');
+    let category = $('.question-wrapper[data-question="' + currentQuestion + '"]').data('category');
+    let score = 0;
 
-    if(selectedChoiceValue.toString() === correctAnswer.toString()){
+    if(answer.toString() === correctAnswer.toString()){
         console.log('correct');
         $('.quiz-choice.selected').addClass('correct');
         correctAnswers = correctAnswers + 1;
         $('.summary .score .result').text(correctAnswers);
+        score = getScore(difficulty);
     }else{
         console.log('wrong');
         $('.quiz-choice.selected').addClass('wrong');
-        // @TODO must be correct answer of current question
         $('.question-wrapper[data-question="' + currentQuestion + '"] .quiz-choice[data-value="' + correctAnswer + '"]').addClass('correct');
     }
 
+    saveAnswer(questionId, category, score)
+
     $('#submitQuiz').addClass('next-question').text('Continuer');
+}
+
+function getScore(difficulty){
+    let score = 0;
+
+    if(difficulty === 'débutant'){
+        score = 1;
+    }else if(difficulty === 'confirmé'){
+        score = 2;
+    }else if(difficulty === 'expert'){
+        score = 3;
+    }
+
+    return score;
 }

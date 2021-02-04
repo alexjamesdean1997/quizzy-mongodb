@@ -2,6 +2,7 @@
 // src/Controller/HomeController.php
 namespace App\Controller;
 
+use App\Document\Answer;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Document\Questions;
@@ -141,32 +142,29 @@ class QuizController extends AbstractController
     /**
      * @Route("/saveanswer/ajax", name="save_answer")
      */
-    public function saveAnswer(Request $request, QuestionRepository $questionRepository)
+    public function saveAnswer(Request $request, DocumentManager $dm)
     {
         $data = json_decode($request->query->get('data'), true);
-        $em = $this->getDoctrine()->getManager();
-
         $user = $this->security->getUser();
-        $question = $questionRepository->find($data['questionId']);
-        $correct_answer = $question->getCorrectAnswer();
-        $success = null;
+        $question = $data['questionId'];
+        $category = $data['category'];
+        $score = $data['score'];
+        $success = false;
 
-        $newAnswer = new Answer();
-
-        $newAnswer->setUser($user);
-        $newAnswer->setQuestion($question);
-        $newAnswer->setCreatedAt(new \DateTime());
-
-        if(strval($data['answer']) === strval($correct_answer)){
+        if($score){
             $success = true;
-        }else{
-            $success = false;
         }
 
-        $newAnswer->setSuccess($success);
+        $answer = new Answer();
 
-        $em->persist($newAnswer);
-        $em->flush();
+        $answer->setQuestionId($question);
+        $answer->setScore($score);
+        $answer->setCategory($category);
+        $answer->setSuccess($success);
+        $user->addAnswer($answer);
+
+        $dm->persist($user);
+        $dm->flush();
 
         $message = 'saved answer';
 

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Document\Answer;
 use App\Document\Users;
+use Doctrine\Bundle\MongoDBBundle\ManagerRegistry;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,21 +41,40 @@ class HomeController extends AbstractController
     }
 
     /**
+     * @Route("/test", name="test")
+     */
+    public function test(ManagerRegistry $mr)
+    {
+
+        $database = $mr->getConnection()->quizzy;
+
+        $cursor = $database->aggregate([
+            [
+                '$match' => [
+                    'avatar' => [
+                        '$eq' => 3,
+                    ],
+                ],
+            ]
+        ]);
+
+        $results = $cursor->toArray()[0];
+
+        dump($results);die();
+
+        return $this->render('dashboard.html.twig', []);
+    }
+
+    /**
      * @Route("/dashboard", name="dashboard")
      */
     public function dashboard(DocumentManager $dm)
     {
         $user = $this->security->getUser();
-        $userRepository = $dm->getRepository(Users::class);
         $answers = $user->getAnswers();
-
         $questions_answered = count($answers);
-        $success_count = 0;
-
-        dump($questions_answered);
 
         $builder = $dm->createAggregationBuilder(Users::class);
-
         $builder
             ->match()
                 ->field('_id')
@@ -64,65 +84,42 @@ class HomeController extends AbstractController
                 ->field('_id')
                 ->expression(null)
                 ->field('TotalScore')
-                ->sum('$answer.score');
-
-        $result = $builder->execute()->toArray();
-        $totalScore = $result[0]["TotalScore"];
-
-        $builder
-            ->match()
-                ->field('_id')
-                ->equals($user->getId())
-            ->unwind('$answer')
-            ->group()
-                ->field('_id')
-                ->expression(null)
-                ->field('TotalScore')
+                ->sum('$answer.score')
+                ->field('TotalSuccess')
                 ->sum($builder->expr()->cond('$answer.success',1,0));
 
         $result = $builder->execute()->toArray();
         $totalScore = $result[0]["TotalScore"];
+        $totalSuccess = $result[0]["TotalSuccess"];
+
+        $rankBuilder = $dm->createAggregationBuilder(Users::class);
+        $rankBuilder
+            ->unwind('$answer')
+            ->group()
+                ->field('_id')
+                ->expression('$_id')
+                ->field('TotalScore')
+                ->sum($rankBuilder->expr()->sum('$answer.score'))
+            ->sort('TotalScore','desc');
+
+        $rank = 0;
+
+        foreach ($rankBuilder->getAggregation() as $key=>$collec){
+            if($collec['_id'] == $user->getId()){
+                $rank = $key + 1;
+            }
+        }
+
 
         if($questions_answered){
-            $success_rate = ($success_count / $questions_answered) * 100;
+            $success_rate = ($totalSuccess / $questions_answered) * 100;
         }else{
             $success_rate = 0;
         }
 
-        /*$allUsers = $userRepository->findAll();
-        $user_scores = [];
-
-        foreach ($allUsers as $aUser){
-            $answers = $aUser->getAnswers();
-            $user_score = 0;
-
-            foreach ($answers as $answer){
-                if($answer->getSuccess()){
-                    $difficulty = $answer->getQuestion()->getDifficulty();
-
-                    if($difficulty === 'débutant'){
-                        $user_score = $user_score + 1;
-                    }elseif ($difficulty === 'confirmé'){
-                        $user_score = $user_score + 2;
-                    }elseif ($difficulty === 'expert'){
-                        $user_score = $user_score + 3;
-                    }
-                }
-            }
-
-            $userId = $aUser->getId();
-            $user_scores[$userId] = $user_score;
-        }
-
-        arsort($user_scores);
-
-        $stringUserId = strval($currentUserId);
-
-        $rank = array_search($stringUserId,array_keys($user_scores)) + 1;
-        */
         $stats = [];
         $stats['success-rate'] = round($success_rate, 2);
-        //$stats['rank'] = $rank;
+        $stats['rank'] = $rank;
         $stats['score'] = $totalScore;
 
         return $this->render('dashboard.html.twig', [
@@ -251,7 +248,7 @@ class HomeController extends AbstractController
                 $answer->setSuccess($success);
                 $answer->setQuestionId($question->getQid());
                 if($success){
-                    $answer->setScore(1);
+                    $answer->setScore(3);
                 }else{
                     $answer->setScore(0);
                 }
