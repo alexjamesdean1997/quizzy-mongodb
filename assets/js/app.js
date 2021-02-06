@@ -1,6 +1,6 @@
 import '../styles/style.scss';
 // apiKey
-import secret from "./secret";
+//import secret from "./secret";
 
 let currentQuestion = 1;
 let correctAnswers = 0;
@@ -11,7 +11,7 @@ $(document).ready(function(){
         getQuestion();
         console.log('get question');
         var intervalId = window.setInterval(function(){
-            getQuestion();
+            //getQuestion();
             console.log('get question');
         }, 61100);
     }

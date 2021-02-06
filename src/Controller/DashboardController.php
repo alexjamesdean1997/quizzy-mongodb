@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Security;
 
-class HomeController extends AbstractController
+class DashboardController extends AbstractController
 {
 
     /**
@@ -38,31 +38,6 @@ class HomeController extends AbstractController
     public function index()
     {
         return $this->render('home.html.twig', []);
-    }
-
-    /**
-     * @Route("/test", name="test")
-     */
-    public function test(ManagerRegistry $mr)
-    {
-
-        $database = $mr->getConnection()->quizzy;
-
-        $cursor = $database->aggregate([
-            [
-                '$match' => [
-                    'avatar' => [
-                        '$eq' => 3,
-                    ],
-                ],
-            ]
-        ]);
-
-        $results = $cursor->toArray()[0];
-
-        dump($results);die();
-
-        return $this->render('dashboard.html.twig', []);
     }
 
     /**
@@ -98,18 +73,39 @@ class HomeController extends AbstractController
             ->group()
                 ->field('_id')
                 ->expression('$_id')
+                ->field('first_name')
+                ->expression(
+                    $rankBuilder->expr()
+                        ->field('$first')
+                        ->expression('$first_name')
+                )
+                ->field('last_name')
+                ->expression(
+                    $rankBuilder->expr()
+                        ->field('$first')
+                        ->expression('$last_name')
+                )
+                ->field('avatar')
+                ->expression(
+                    $rankBuilder->expr()
+                        ->field('$first')
+                        ->expression('$avatar')
+                )
                 ->field('TotalScore')
                 ->sum($rankBuilder->expr()->sum('$answer.score'))
             ->sort('TotalScore','desc');
 
         $rank = 0;
+        $leaderboard = [];
 
         foreach ($rankBuilder->getAggregation() as $key=>$collec){
+            if(count($leaderboard) < 5){
+                $leaderboard[] = $collec;
+            }
             if($collec['_id'] == $user->getId()){
                 $rank = $key + 1;
             }
         }
-
 
         if($questions_answered){
             $success_rate = ($totalSuccess / $questions_answered) * 100;
@@ -123,7 +119,8 @@ class HomeController extends AbstractController
         $stats['score'] = $totalScore;
 
         return $this->render('dashboard.html.twig', [
-            'stats' => $stats
+            'stats' => $stats,
+            'leaders' => $leaderboard
         ]);
     }
 

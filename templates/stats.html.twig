@@ -1,7 +1,7 @@
 {% extends 'common.html.twig' %}
 {% block body %}
     <main class="container">
-        <h1 class="title">Dashboard</h1>
+        <h1 class="title">Vos stats</h1>
         <div class="user-info">
             {% set avatar = 'build/avatar-' ~ app.user.getAvatar ~ '.jpg' %}
             <div class="user-avatar">
@@ -75,27 +75,6 @@
             <a href="/quiz" class="btn btn--outline btn--icon">
                 <img src="{{ asset('build/quiz-active.svg') }}" alt="quiz icon">
                 Plus de catégories
-            </a>
-        </div>
-
-        <h2 class="subtitle">Classement général</h2>
-        <div class="leaderboard">
-            {% for leader in leaders %}
-                {% set avatar = 'build/avatar-' ~ leader.avatar ~ '.jpg' %}
-                <div class="leader">
-                    <div class="rank"><span>#</span>{{ loop.index }}</div>
-                    <div class="avatar">
-                        <img src="{{ asset(avatar) }}" alt="user avatar">
-                    </div>
-                    <div class="name">{{ leader.first_name }} {{ leader.last_name }}</div>
-                    <div class="score">{{ leader.TotalScore }} <span>pts</span></div>
-                </div>
-            {% endfor %}
-        </div>
-        <div class="more more--last">
-            <a href="/leaderboard" class="btn btn--outline btn--icon">
-                <img src="{{ asset('build/leaderboard-active.svg') }}" alt="quiz icon">
-                Classement entier
             </a>
         </div>
 
