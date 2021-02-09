@@ -161,6 +161,7 @@ class QuizController extends AbstractController
         $answer->setScore($score);
         $answer->setCategory($category);
         $answer->setSuccess($success);
+        $answer->setDate(new \DateTime());
         $user->addAnswer($answer);
 
         $dm->persist($user);

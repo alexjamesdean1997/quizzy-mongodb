@@ -259,4 +259,30 @@ class DashboardController extends AbstractController
 
         ]);
     }
+
+    /**
+     * @Route("/updateanswers", name="update_answers")
+     */
+    public function updateanswers(DocumentManager $dm)
+    {
+
+        $userRepository = $dm->getRepository(Users::class);
+
+        $users = $userRepository->findAll();
+
+        $dates = ['25-01-2021' , '04-02-2021'];
+
+        foreach ($users as $user){
+            foreach ($user->getAnswers() as $answer){
+                dump($answer);
+                $answer->setDate(new \DateTime($dates[array_rand($dates)]));
+                $user->addAnswer($answer);
+                $dm->persist($user);
+                $dm->flush();
+            }
+        }
+        return $this->render('loadanswers.html.twig', [
+
+        ]);
+    }
 }

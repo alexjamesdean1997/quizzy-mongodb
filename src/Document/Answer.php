@@ -3,6 +3,7 @@
 namespace App\Document;
 
 
+use DateTime;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Doctrine\ODM\MongoDB\Mapping\Annotations\EmbeddedDocument;
 
@@ -34,6 +35,11 @@ class Answer
      * @MongoDB\Field(type="integer")
      */
     private $score;
+
+    /**
+     * @MongoDB\Field(type="date")
+     */
+    private $date;
 
     public function getId()
     {
@@ -86,5 +92,13 @@ class Answer
         $this->score = $score;
 
         return $this;
+    }
+
+    public function getDate(): ?DateTime {
+        return $this->date;
+    }
+
+    public function setDate(DateTime $date) {
+        $this->date = $date;
     }
 }

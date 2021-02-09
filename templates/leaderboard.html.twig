@@ -1,0 +1,24 @@
+{% extends 'common.html.twig' %}
+{% block body %}
+    <main class="container">
+        <h1 class="title">Classement</h1>
+
+        {% for key, rank in ranks %}
+            <h2 class="subtitle">Classement {{ key }}</h2>
+            <div class="leaderboard">
+                {% for leader in rank %}
+                    {% set avatar = 'build/avatar-' ~ leader.avatar ~ '.jpg' %}
+                    <div class="leader">
+                        <div class="rank"><span>#</span>{{ loop.index }}</div>
+                        <div class="avatar">
+                            <img src="{{ asset(avatar) }}" alt="user avatar">
+                        </div>
+                        <div class="name">{{ leader.first_name }} {{ leader.last_name }}</div>
+                        <div class="score">{{ leader[key] }} <span>pts</span></div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+
+    </main>
+{% endblock %}
