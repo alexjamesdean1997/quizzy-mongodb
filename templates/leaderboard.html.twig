@@ -4,8 +4,20 @@
         <h1 class="title">Classement</h1>
 
         {% for key, rank in ranks %}
-            <h2 class="subtitle">Classement {{ key }}</h2>
-            <div class="leaderboard">
+            {% set category = key %}
+            {% if key == "overall" %}
+                {% set category = "général" %}
+            {% elseif key == "celebrites" %}
+                {% set category = "célébrités" %}
+            {% elseif key == "geographie" %}
+                {% set category = "géographie" %}
+            {% elseif key == "litterature" %}
+                {% set category = "littérature" %}
+            {% elseif key == "television" %}
+                {% set category = "télévision" %}
+            {% endif %}
+            <h2 class="subtitle">Classement {{ category }}</h2>
+            <div class="leaderboard {% if key != "overall" %}collapsable{% endif %}">
                 {% for leader in rank %}
                     {% set avatar = 'build/avatar-' ~ leader.avatar ~ '.jpg' %}
                     <div class="leader">
@@ -17,6 +29,11 @@
                         <div class="score">{{ leader[key] }} <span>pts</span></div>
                     </div>
                 {% endfor %}
+                {% if key != "overall" %}
+                    <div class="collapser">
+                        <img src="{{ asset('build/collapse.svg') }}" alt="collapse icon"> <span>Show more</span>
+                    </div>
+                {% endif %}
             </div>
         {% endfor %}
 

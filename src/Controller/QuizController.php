@@ -38,9 +38,25 @@ class QuizController extends AbstractController
      */
     public function difficulty($category)
     {
+        $categoryName = $category;
+
+        if($category == "aleatoire"){
+            $categoryName = "aléatoire";
+        }elseif($category == "cinema"){
+            $categoryName = "cinéma";
+        }elseif($category == "celebrites"){
+            $categoryName = "célébrités";
+        }elseif($category == "geographie"){
+            $categoryName = "géographie";
+        }elseif($category == "litterature"){
+            $categoryName = "littérature";
+        }elseif($category == "television"){
+            $categoryName = "télévision";
+        }
 
         return $this->render('difficulties.html.twig', [
-            "category" => $category
+            "category" => $category,
+            "category_name" => $categoryName
         ]);
     }
 
@@ -77,15 +93,7 @@ class QuizController extends AbstractController
         }
 
         if($difficulty === 'débutant' || $difficulty === 'confirmé' || $difficulty === 'expert'){
-            if($category == 'tech'){
-                $internetQuestions = $questionRepository->findBy(
-                    ['category' => 'internet','difficulty' => $difficulty]
-                );
-                $computerQuestions = $questionRepository->findBy(
-                    ['category' => 'informatique','difficulty' => $difficulty]
-                );
-                $questions = array_merge($internetQuestions, $computerQuestions);
-            }elseif($category == 'aleatoire') {
+            if($category == 'aleatoire') {
                 $questions = $questionRepository->findBy(
                     ['difficulty' => $difficulty]
                 );
@@ -95,15 +103,7 @@ class QuizController extends AbstractController
                 );
             }
         }else{
-            if($category == 'tech'){
-                $internetQuestions = $questionRepository->findBy(
-                    ['category' => 'internet']
-                );
-                $computerQuestions = $questionRepository->findBy(
-                    ['category' => 'informatique']
-                );
-                $questions = array_merge($internetQuestions, $computerQuestions);
-            }elseif($category == 'aleatoire') {
+            if($category == 'aleatoire') {
                 $questions = $questionRepository->findAll();
             }else{
                 $questions = $questionRepository->findBy(
@@ -120,8 +120,25 @@ class QuizController extends AbstractController
             $sessionQuestion->setChoices($choices);
         }
 
+        $categoryName = $category;
+
+        if($category == "aleatoire"){
+            $categoryName = "aléatoire";
+        }elseif($category == "celebrites"){
+            $categoryName = "célébrités";
+        }elseif($category == "cinema"){
+            $categoryName = "cinéma";
+        }elseif($category == "geographie"){
+            $categoryName = "géographie";
+        }elseif($category == "litterature"){
+            $categoryName = "littérature";
+        }elseif($category == "television"){
+            $categoryName = "télévision";
+        }
+
         return $this->render('category.html.twig', [
             "category" => $category,
+            "category_name" => $categoryName,
             "difficulty" => $difficulty,
             "questions" => $sessionQuestions
         ]);
@@ -149,18 +166,12 @@ class QuizController extends AbstractController
         $question = $data['questionId'];
         $category = $data['category'];
         $score = $data['score'];
-        $success = false;
-
-        if($score){
-            $success = true;
-        }
 
         $answer = new Answer();
 
         $answer->setQuestionId($question);
         $answer->setScore($score);
         $answer->setCategory($category);
-        $answer->setSuccess($success);
         $answer->setDate(new \DateTime());
         $user->addAnswer($answer);
 

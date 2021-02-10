@@ -2,8 +2,12 @@
 {% block body %}
     <main class="container quiz-game">
         <h1 class="title">Quiz</h1>
-        <h2 class="subtitle">{{ category }}</h2>
-        <div class="subtitle subtitle--small">{{ difficulty }}</div>
+        <h2 class="subtitle">{{ category_name }}</h2>
+        {% if difficulty != "all" %}
+            <div class="subtitle subtitle--small">{{ difficulty }}</div>
+        {% else %}
+            <div class="subtitle subtitle--small random-difficulty">{{ questions[0].difficulty }}</div>
+        {% endif %}
 
         <div class="questions">
             {% for question in questions %}

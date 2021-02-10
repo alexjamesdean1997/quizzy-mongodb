@@ -17,11 +17,6 @@ class Answer
     private $id;
 
     /**
-     * @MongoDB\Field(type="boolean")
-     */
-    private $success;
-
-    /**
      * @MongoDB\Field(type="string")
      */
     private $category;
@@ -44,18 +39,6 @@ class Answer
     public function getId()
     {
         return $this->id;
-    }
-
-    public function getSuccess(): ?bool
-    {
-        return $this->success;
-    }
-
-    public function setSuccess(bool $success): self
-    {
-        $this->success = $success;
-
-        return $this;
     }
 
     public function getCategory(): ?string

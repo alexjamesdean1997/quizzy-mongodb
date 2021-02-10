@@ -93,15 +93,23 @@
   background-color: white;
   padding-top: 59px;
   position: relative;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
   box-shadow: 0 0 22px #0000000F;
 
   .leader{
     display: flex;
     align-items: center;
-    padding: 10px 12px;
-    box-shadow: 0 0 22px #0000000F;
+    padding: 5px 12px 8px;
     position: relative;
+
+    &:not(:nth-child(1), :nth-child(2), :nth-child(3)){
+      opacity: 0;
+      transition: opacity 0.2s ease-in;
+
+      &.open{
+        opacity: 1;
+      }
+    }
 
     &:after{
       content: '';
@@ -117,7 +125,7 @@
       background-color: $blue;
       color: white;
       border-radius: 8px;
-      padding: 10px 20px;
+      padding: 7px 20px;
       position: absolute;
       top: 0;
       left: -8px;
@@ -144,11 +152,11 @@
     }
 
     .rank{
-      padding-top: 5px;
+      padding-top: 10px;
       font-size: 30px;
       font-weight: 600;
       color: $blue;
-      padding-right: 20px;
+      width: 50px;
 
       span{
         font-weight: 100;
@@ -184,6 +192,32 @@
         font-weight: 100;
         font-size: 12px;
       }
+    }
+  }
+
+  &.collapsable{
+    position: relative;
+    border-radius: 8px 8px 0 8px;
+  }
+
+  .collapser{
+    background-color: white;
+    padding: 0 20px 7px;
+    color: $blue;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    position: absolute;
+    border-radius: 0 0 8px 8px;
+    bottom: -22px;
+    right: 0;
+    box-shadow: 0 19px 22px #00000009;
+
+    img{
+      width: 10px;
+      height: auto;
+      object-fit: contain;
+      margin-right: 10px;
     }
   }
 }

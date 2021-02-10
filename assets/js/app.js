@@ -36,7 +36,8 @@ $(document).ready(function(){
             currentQuestion = currentQuestion + 1;
 
             if(currentQuestion <= 10){
-
+                let category = $('.question-wrapper[data-question="' + currentQuestion + '"]').data('difficulty');
+                $('.random-difficulty').text(category);
                 $('.question-wrapper[data-question="' + currentQuestion + '"]').show();
             }else {
 
@@ -50,6 +51,35 @@ $(document).ready(function(){
             let answer = $('.quiz-choice.selected').data('value');
             getCorrectAnswer(questionOid, questionId, answer);
         }
+    });
+
+    // leader board collapse
+
+    $( ".leader" ).each(function() {
+        if($( this ).index() > 2){
+            $( this ).hide();
+        }
+    });
+
+    $( ".collapser" ).click(function() {
+        if($( this ).closest('.leaderboard').find('.leader').index() > 2){
+
+        }
+
+        $( this ).closest('.leaderboard').find('.leader').each(function() {
+            if($( this ).index() > 2){
+
+                if( $( this ).hasClass('open')){
+                    $( this ).delay(400).slideToggle(400);
+                    $( this ).removeClass('open');
+                }else{
+                    $( this ).slideToggle(400);
+                    setInterval(function(){
+                        $( this ).addClass('open');
+                    }, 400);
+                }
+            }
+        });
     });
 });
 
@@ -165,7 +195,7 @@ function saveAnswer(questionId, category, score) {
             console.log(data);
         },
         error : function(xhr, textStatus, errorThrown) {
-            console.log('failed to get question correct answer');
+            console.log('failed to save answer to database');
         }
     });
 }

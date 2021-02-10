@@ -41,6 +41,31 @@ class DashboardController extends AbstractController
     }
 
     /**
+     * @Route("/edit-data", name="data-edit")
+     */
+    public function editdata(DocumentManager $dm)
+    {
+        $questions = $dm->createQueryBuilder(Users::class)
+            ->updateMany()
+            ->field('category')->equals('internet')
+            ->field('category')->set('tech')
+            ->getQuery()
+            ->execute();
+
+        /*$count = 0;
+        foreach ($questions as $question){
+
+            if($question->getCategory() == "informatique" or $question->getCategory() == "internet"){
+                dump($question->getCategory());
+                $count = $count + 1;
+            }
+        }
+        dump($count);die();*/
+
+        return $this->render('home.html.twig', []);
+    }
+
+    /**
      * @Route("/dashboard", name="dashboard")
      */
     public function dashboard(DocumentManager $dm)
@@ -61,7 +86,11 @@ class DashboardController extends AbstractController
                 ->field('TotalScore')
                 ->sum('$answer.score')
                 ->field('TotalSuccess')
-                ->sum($builder->expr()->cond('$answer.success',1,0));
+                ->sum($builder->expr()->sum($builder->expr()->cond(
+                    $builder->expr()->gte('$answer.score', 1),
+                    1,
+                    0
+                )));
 
         $result = $builder->execute()->toArray();
         $totalScore = $result[0]["TotalScore"];
@@ -165,6 +194,10 @@ class DashboardController extends AbstractController
                 }
             }
 
+            if($data["results"][0]["categorie"] == 'internet' or $data["results"][0]["categorie"] == 'informatique'){
+                $data["results"][0]["categorie"] = 'tech';
+            }
+
             $newQuestion = new Questions();
             $newQuestion->setQid($lastId + 1);
             $newQuestion->setLanguage($data["results"][0]["langue"]);
@@ -203,7 +236,7 @@ class DashboardController extends AbstractController
     {
         $this->faker = Factory::create();
 
-        for ($i = 1; $i <= 20; $i++) {
+        for ($i = 1; $i <= 160; $i++) {
             $user = new Users();
             $firstname = strtolower($this->faker->firstName);
             $lastname = strtolower($this->faker->lastName);
@@ -211,7 +244,7 @@ class DashboardController extends AbstractController
             $user->setLastName($lastname);
             $user->setEmail($firstname.'.'.$lastname.'@gmail.com');
             $user->setRoles(['ROLE_USER']);
-            $user->setAvatar(rand(0,6));
+            $user->setAvatar(rand(1,6));
             $user->setPassword($this->passwordEncoder->encodePassword($user, 'admin123'));
             $dm->persist($user);
             $dm->flush();
@@ -232,24 +265,19 @@ class DashboardController extends AbstractController
         $userRepository = $dm->getRepository(Users::class);
 
         $users = $userRepository->findAll();
+        $dates = ['25-01-2021' , '04-02-2021'];
 
         foreach ($users as $user){
-            $answers_count = rand(5,40);
+            $answers_count = rand(5,80);
 
             for ($i = 1; $i <= $answers_count; $i++) {
                 $answer = new Answer();
-                $questionId = rand(867,6905);
+                $questionId = rand(867,8203);
                 $question = $questionRepository->findOneBy(['qid' => $questionId]);
-                $success = rand(0,1);
+                $answer->setDate(new \DateTime($dates[array_rand($dates)]));
                 $answer->setCategory($question->getCategory());
-                $answer->setSuccess($success);
                 $answer->setQuestionId($question->getQid());
-                if($success){
-                    $answer->setScore(3);
-                }else{
-                    $answer->setScore(0);
-                }
-
+                $answer->setScore(rand(0,3));
                 $user->addAnswer($answer);
                 $dm->persist($user);
                 $dm->flush();

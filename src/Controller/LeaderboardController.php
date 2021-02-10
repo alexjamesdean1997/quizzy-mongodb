@@ -56,6 +56,7 @@ class LeaderboardController extends AbstractController
         $categories = [
             'animaux',
             'celebrites',
+            'cinema',
             'culture',
             'geographie',
             'histoire',
@@ -65,8 +66,7 @@ class LeaderboardController extends AbstractController
             'quotidien',
             'sciences',
             'sports',
-            'internet',
-            'informatique',
+            'tech',
             'television'
         ];
 
