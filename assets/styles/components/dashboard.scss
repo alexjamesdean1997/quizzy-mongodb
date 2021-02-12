@@ -153,6 +153,23 @@
         font-weight: 100;
         font-size: 14px;
       }
+
+      &--category{
+        margin-left: auto;
+        text-align: right;
+        padding-right: 8px;
+      }
+    }
+
+    .category-icon{
+      display: flex;
+      align-items: center;
+      padding: 0 30px 0 8px;
+
+      img{
+        height: 24px;
+        width: 24px;
+      }
     }
 
     .avatar{
@@ -170,6 +187,10 @@
     .name{
       font-size: 16px;
       padding-top: 4px;
+
+      &--category{
+        text-transform: capitalize;
+      }
     }
 
     .score{

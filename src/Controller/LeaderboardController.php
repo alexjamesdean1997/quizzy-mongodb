@@ -43,7 +43,10 @@ class LeaderboardController extends AbstractController
                 )
                 ->field('overall')
                 ->sum($rankBuilder->expr()->sum('$answer.score'))
-            ->sort('overall','desc');
+            ->sort(array(
+                'overall' => 'desc',
+                '_id'       => 'desc',
+            ));
 
         $overall_rank = [];
 
@@ -115,7 +118,10 @@ class LeaderboardController extends AbstractController
                     '$answer.score',
                     0
                 )))
-            ->sort($category,'desc');
+            ->sort(array(
+                $category => 'desc',
+                '_id'       => 'desc',
+            ));
 
         $ranked_cat = [];
         foreach ($rankBuilder->getAggregation() as $collec){

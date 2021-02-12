@@ -2,80 +2,31 @@
 {% block body %}
     <main class="container">
         <h1 class="title">Vos stats</h1>
-        <div class="user-info">
-            {% set avatar = 'build/avatar-' ~ app.user.getAvatar ~ '.jpg' %}
-            <div class="user-avatar">
-                <img src="{{ asset(avatar) }}" alt="user avatar">
-            </div>
-            <div class="user-name">
-                <div class="user-firstname">
-                    {{ app.user.getFirstName }}
+        <h2 class="subtitle">Classement par catégorie</h2>
+        <div class="leaderboard">
+            {% for key, ranking in rankings %}
+                {% set category = key %}
+                {% if key == "all" %}
+                    {% set category = "général" %}
+                {% elseif key == "celebrites" %}
+                    {% set category = "célébrités" %}
+                {% elseif key == "geographie" %}
+                    {% set category = "géographie" %}
+                {% elseif key == "litterature" %}
+                    {% set category = "littérature" %}
+                {% elseif key == "television" %}
+                    {% set category = "télévision" %}
+                {% endif %}
+                {% set icon = 'build/' ~ key ~ '-color.svg' %}
+                <div class="leader">
+                    <div class="category-icon">
+                        <img src="{{ asset(icon) }}" alt="{{ key }} icon">
+                    </div>
+
+                    <div class="name name--category">{{ category }}</div>
+                    <div class="rank rank--category"><span>#</span>{{ ranking }}</div>
                 </div>
-                <div class="user-firstname">
-                    {{ app.user.getLastName }}
-                </div>
-            </div>
-            <a href="/user/edit" class="btn-icon user-edit">
-                <img src="{{ asset('build/edit.svg') }}" alt="edit icon">
-            </a>
-        </div>
-
-        <h2 class="subtitle">Vos stats</h2>
-
-        <div class="user-stats">
-            <div class="stat">
-                <div class="label">Classement général</div>
-                <div class="number"><span>#</span>{{ overalls['rank'] }}</div>
-            </div>
-            <div class="stat">
-                <div class="label">Taux de réussite</div>
-                <div class="number">{{ overalls['success-rate'] }}<span>%</span></div>
-            </div>
-            <div class="stat">
-                <div class="label">Nombre de points</div>
-                <div class="number">{{ overalls['score'] }}</div>
-            </div>
-        </div>
-        <div class="more">
-            <a href="/stats" class="btn btn--outline btn--icon">
-                <img src="{{ asset('build/stats-active.svg') }}" alt="stats icon">
-                Plus de stats
-            </a>
-        </div>
-
-        <h2 class="subtitle">Vos catégories préférées</h2>
-
-        <div class="categories">
-            <a href="/quiz/celebrites" class="category celebs">
-                <img src="{{ asset('build/star.svg') }}" alt="star icon">
-                Célébrités
-            </a>
-            <a href="/quiz/culture" class="category knowledge">
-                <img src="{{ asset('build/book.svg') }}" alt="book icon">
-                Culture
-            </a>
-            <a href="/quiz/histoire" class="category history">
-                <img src="{{ asset('build/feather.svg') }}" alt="feather icon">
-                Histoire
-            </a>
-            <a href="/quiz/sciences" class="category science">
-                <img src="{{ asset('build/activity.svg') }}" alt="activity icon">
-                Sciences
-            </a>
-            <a href="/quiz/sports" class="category sports">
-                <img src="{{ asset('build/sport.svg') }}" alt="sport icon">
-                Sports
-            </a>
-            <a href="/quiz/tech" class="category tech">
-                <img src="{{ asset('build/cpu.svg') }}" alt="cpu icon">
-                Tech
-            </a>
-        </div>
-        <div class="more">
-            <a href="/quiz" class="btn btn--outline btn--icon">
-                <img src="{{ asset('build/quiz-active.svg') }}" alt="quiz icon">
-                Plus de catégories
-            </a>
+            {% endfor %}
         </div>
 
     </main>

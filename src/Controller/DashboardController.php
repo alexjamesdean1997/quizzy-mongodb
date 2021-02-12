@@ -122,7 +122,10 @@ class DashboardController extends AbstractController
                 )
                 ->field('TotalScore')
                 ->sum($rankBuilder->expr()->sum('$answer.score'))
-            ->sort('TotalScore','desc');
+            ->sort(array(
+                'TotalScore' => 'desc',
+                '_id'       => 'desc',
+            ));
 
         $rank = 0;
         $leaderboard = [];

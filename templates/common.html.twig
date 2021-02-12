@@ -22,31 +22,48 @@
     </div>
 </header>
 
+{% set current_path = app.request.get('_route') %}
+
 <nav class="mobile-menu">
     <ul class="mobile-menu-wrapper">
         <li>
             <a href="/dashboard">
-                <img src="{{ asset('build/dashboard.svg') }}" alt="dashboard icon">
+                {% if current_path == 'dashboard' %}
+                    <img src="{{ asset('build/dashboard-active.svg') }}" alt="dashboard icon">
+                {% else %}
+                    <img src="{{ asset('build/dashboard.svg') }}" alt="dashboard icon">
+                {% endif %}
             </a>
         </li>
         <li>
             <a href="/quiz">
-                <img src="{{ asset('build/quiz.svg') }}" alt="quiz icon">
+                {% if current_path == 'quiz' %}
+                    <img src="{{ asset('build/quiz-active.svg') }}" alt="quiz icon">
+                {% else %}
+                    <img src="{{ asset('build/quiz.svg') }}" alt="quiz icon">
+                {% endif %}
             </a>
         </li>
         <li>
             <a href="/stats">
-                <img src="{{ asset('build/stats.svg') }}" alt="stats icon">
+                {% if current_path == 'stats' %}
+                    <img src="{{ asset('build/stats-active.svg') }}" alt="stats icon">
+                {% else %}
+                    <img src="{{ asset('build/stats.svg') }}" alt="stats icon">
+                {% endif %}
             </a>
         </li>
         <li>
             <a href="/leaderboard">
-                <img src="{{ asset('build/leaderboard.svg') }}" alt="leaderboard icon">
+                {% if current_path == 'leaderboard' %}
+                    <img src="{{ asset('build/leaderboard-active.svg') }}" alt="leaderboard icon">
+                {% else %}
+                    <img src="{{ asset('build/leaderboard.svg') }}" alt="leaderboard icon">
+                {% endif %}
             </a>
         </li>
     </ul>
 </nav>
-
 {% block body %}{% endblock %}
 
 </body>
