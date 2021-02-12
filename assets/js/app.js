@@ -56,15 +56,26 @@ $(document).ready(function(){
     // leader board collapse
 
     $( ".collapsable .leader" ).each(function() {
-        if($( this ).index() > 2){
+        if($( this ).parent().hasClass('collapsable--stats') && $( this ).index() > 3){
+            $( this ).hide();
+        }else if(!$( this ).parent().hasClass('collapsable--stats') && $( this ).index() > 2){
             $( this ).hide();
         }
     });
 
     $( ".collapser" ).click(function() {
 
+        $(this).toggleClass('expanded');
+
         $( this ).closest('.leaderboard').find('.leader').each(function() {
-            if($( this ).index() > 2){
+            if($( this ).parent().hasClass('collapsable--stats') && $( this ).index() > 3){
+                if( $(this).is(':visible')){
+                    $( this ).removeClass('open');
+                }
+                $(this).slideToggle( 300, function() {
+                    $(this).toggleClass('open', $(this).is(':visible'));
+                });
+            }else if(!$( this ).parent().hasClass('collapsable--stats') && $( this ).index() > 2){
                 if( $(this).is(':visible')){
                     $( this ).removeClass('open');
                 }

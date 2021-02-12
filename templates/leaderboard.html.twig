@@ -31,7 +31,9 @@
                 {% endfor %}
                 {% if key != "overall" %}
                     <div class="collapser">
-                        <img src="{{ asset('build/collapse.svg') }}" alt="collapse icon"> <span>Show more</span>
+                        <img src="{{ asset('build/collapse.svg') }}" alt="collapse icon">
+                        <span class="more-span">Show more</span>
+                        <span class="less-span">Show less</span>
                     </div>
                 {% endif %}
             </div>
