@@ -55,29 +55,22 @@ $(document).ready(function(){
 
     // leader board collapse
 
-    $( ".leader" ).each(function() {
+    $( ".collapsable .leader" ).each(function() {
         if($( this ).index() > 2){
             $( this ).hide();
         }
     });
 
     $( ".collapser" ).click(function() {
-        if($( this ).closest('.leaderboard').find('.leader').index() > 2){
-
-        }
 
         $( this ).closest('.leaderboard').find('.leader').each(function() {
             if($( this ).index() > 2){
-
-                if( $( this ).hasClass('open')){
-                    $( this ).delay(400).slideToggle(400);
+                if( $(this).is(':visible')){
                     $( this ).removeClass('open');
-                }else{
-                    $( this ).slideToggle(400);
-                    setInterval(function(){
-                        $( this ).addClass('open');
-                    }, 400);
                 }
+                $(this).slideToggle( 300, function() {
+                    $(this).toggleClass('open', $(this).is(':visible'));
+                });
             }
         });
     });
