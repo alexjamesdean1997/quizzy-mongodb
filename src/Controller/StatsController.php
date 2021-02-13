@@ -54,13 +54,29 @@ class StatsController extends AbstractController
         {
             $rankByCategory[$category] = $this->getRankByCategory($category, $dm, $user);
         }
+        $rankByCategory = $this->order_results($rankByCategory, 'all', 'asc');
 
         $scoreByCategory = $this->getScoreByCategory($dm, $user);
+        $scoreByCategory = $this->order_results($scoreByCategory, 'all', 'desc');
 
         return $this->render('stats.html.twig', [
             'rankings' => $rankByCategory,
             'scores' => $scoreByCategory
         ]);
+    }
+
+    public function order_results(&$array, $key, $order) {
+
+        if($order == 'desc'){
+            arsort($array);
+        }else{
+            asort($array);
+        }
+
+        $temp = array($key => $array[$key]);
+        unset($array[$key]);
+        $array = $temp + $array;
+        return $array;
     }
 
     public function getRankByCategory($category, $dm, $user){
