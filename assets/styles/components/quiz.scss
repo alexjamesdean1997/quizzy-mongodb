@@ -3,6 +3,21 @@
   justify-content: space-between;
   flex-wrap: wrap;
 
+  &:after {
+    content: "";
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    padding: 16px 12px 12px;
+    border-radius: 8px;
+    width: calc(33.3333% - 30px);
+    margin-bottom: 10px;
+    font-weight: 400;
+    text-decoration: none;
+  }
+
   .category{
     display: flex;
     flex-direction: column;
@@ -34,6 +49,10 @@
 
     &.knowledge{
       background-color: #12DACB;
+    }
+
+    &.food{
+      background-color: #F49F0A;
     }
 
     &.geo{
@@ -74,6 +93,10 @@
 
     &.tv{
       background-color: #315659;
+    }
+
+    &.travel{
+      background-color: #92374D;
     }
 
     img{

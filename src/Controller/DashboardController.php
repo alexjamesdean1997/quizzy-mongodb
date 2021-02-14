@@ -45,10 +45,10 @@ class DashboardController extends AbstractController
      */
     public function editdata(DocumentManager $dm)
     {
-        $questions = $dm->createQueryBuilder(Users::class)
+        $questions = $dm->createQueryBuilder(Questions::class)
             ->updateMany()
-            ->field('category')->equals('internet')
-            ->field('category')->set('tech')
+            ->field('category')->equals('monde')
+            ->field('category')->set('voyage')
             ->getQuery()
             ->execute();
 
@@ -201,6 +201,10 @@ class DashboardController extends AbstractController
                 $data["results"][0]["categorie"] = 'tech';
             }
 
+            if($data["results"][0]["categorie"] == 'tourisme'){
+                $data["results"][0]["categorie"] = 'monde';
+            }
+
             $newQuestion = new Questions();
             $newQuestion->setQid($lastId + 1);
             $newQuestion->setLanguage($data["results"][0]["langue"]);
@@ -239,7 +243,7 @@ class DashboardController extends AbstractController
     {
         $this->faker = Factory::create();
 
-        for ($i = 1; $i <= 160; $i++) {
+        for ($i = 1; $i <= 200; $i++) {
             $user = new Users();
             $firstname = strtolower($this->faker->firstName);
             $lastname = strtolower($this->faker->lastName);
@@ -268,22 +272,24 @@ class DashboardController extends AbstractController
         $userRepository = $dm->getRepository(Users::class);
 
         $users = $userRepository->findAll();
-        $dates = ['25-01-2021' , '04-02-2021'];
+        $dates = ['09-10-2020', '11-11-2020', '18-12-2020', '25-01-2021', '04-02-2021'];
 
         foreach ($users as $user){
-            $answers_count = rand(5,80);
+            $answers_count = rand(5,100);
 
             for ($i = 1; $i <= $answers_count; $i++) {
-                $answer = new Answer();
                 $questionId = rand(867,8203);
                 $question = $questionRepository->findOneBy(['qid' => $questionId]);
-                $answer->setDate(new \DateTime($dates[array_rand($dates)]));
-                $answer->setCategory($question->getCategory());
-                $answer->setQuestionId($question->getQid());
-                $answer->setScore(rand(0,3));
-                $user->addAnswer($answer);
-                $dm->persist($user);
-                $dm->flush();
+                if($question->getCategory() != 'adultes' && $question->getCategory() != 'loisirs' && $question->getCategory() != 'bd' && $question->getCategory() != 'arts' && $question->getCategory() != 'archeologie'){
+                    $answer = new Answer();
+                    $answer->setDate(new \DateTime($dates[array_rand($dates)]));
+                    $answer->setCategory($question->getCategory());
+                    $answer->setQuestionId($question->getQid());
+                    $answer->setScore(rand(0,3));
+                    $user->addAnswer($answer);
+                    $dm->persist($user);
+                    $dm->flush();
+                }
             }
         }
         return $this->render('loadanswers.html.twig', [

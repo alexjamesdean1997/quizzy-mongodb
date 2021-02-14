@@ -38,6 +38,7 @@ class StatsController extends AbstractController
             'cinema',
             'culture',
             'geographie',
+            'gastronomie',
             'histoire',
             'litterature',
             'musique',
@@ -46,7 +47,8 @@ class StatsController extends AbstractController
             'sciences',
             'sports',
             'tech',
-            'television'
+            'television',
+            'voyage'
         ];
 
         $rankByCategory = [];
@@ -180,6 +182,18 @@ class StatsController extends AbstractController
                     0
                 )))
                 ->field('musique')
+                ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                    $rankBuilder->expr()->eq('$answer.category', 'musique'),
+                    '$answer.score',
+                    0
+                )))
+                ->field('gastronomie')
+                ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                    $rankBuilder->expr()->eq('$answer.category', 'musique'),
+                    '$answer.score',
+                    0
+                )))
+                ->field('voyage')
                 ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
                     $rankBuilder->expr()->eq('$answer.category', 'musique'),
                     '$answer.score',
