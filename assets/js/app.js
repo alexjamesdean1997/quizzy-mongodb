@@ -197,9 +197,34 @@ function saveAnswer(questionId, category, score) {
 
         success: function(data, status) {
             console.log(data);
+            updateAverage(category)
         },
         error : function(xhr, textStatus, errorThrown) {
             console.log('failed to save answer to database');
+        }
+    });
+}
+
+function updateAverage(category) {
+
+    let data = {
+        category : category
+    };
+
+    console.log('update average');
+
+    $.ajax({
+        url:        '/getaverage?data=' + JSON.stringify(data),
+        type:       'POST',
+        dataType:   'json',
+        async:      true,
+
+        success: function(data, status) {
+            let average = data.average;
+            $('.average-score').text(average + '/10');
+        },
+        error : function(xhr, textStatus, errorThrown) {
+            console.log('failed to save update average');
         }
     });
 }

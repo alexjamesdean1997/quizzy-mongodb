@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Document\Answer;
+use App\Document\Users;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Document\Questions;
@@ -85,7 +86,6 @@ class QuizController extends AbstractController
     {
         $questionRepository = $dm->getRepository(Questions::class);
 
-
         if($difficulty === 'easy'){
             $difficulty = 'débutant';
         }elseif($difficulty === 'confirmed'){
@@ -136,12 +136,32 @@ class QuizController extends AbstractController
             $categoryName = "télévision";
         }
 
+        $categoryAverage = $this->userCategoryAverage($dm, $category);
+
         return $this->render('category.html.twig', [
             "category" => $category,
             "category_name" => $categoryName,
             "difficulty" => $difficulty,
-            "questions" => $sessionQuestions
+            "questions" => $sessionQuestions,
+            "average" => $categoryAverage
         ]);
+    }
+
+    /**
+     * @Route("/getaverage", name="get_average")
+     */
+    public function getAverage(Request $request, DocumentManager $dm)
+    {
+        $data = json_decode($request->query->get('data'), true);
+        $category = $data['category'];
+        $categoryAverage = $this->userCategoryAverage($dm, $category);
+
+        $response = array(
+            "code" => 200,
+            "average" => $categoryAverage
+        );
+
+        return new JsonResponse($response);
     }
 
     public function randomize($questions){
@@ -155,6 +175,45 @@ class QuizController extends AbstractController
         return $sessionQuestions;
     }
 
+    public function userCategoryAverage($dm, $category){
+        $user = $this->security->getUser();
+
+        $builder = $dm->createAggregationBuilder(Users::class);
+        $builder
+            ->match()
+                ->field('_id')
+                ->equals($user->getId())
+            ->unwind('$answer')
+            ->match()
+                ->field('answer.category')
+                ->equals($category)
+            ->group()
+                ->field('_id')
+                ->expression('$_id')
+                ->field('total')
+                ->sum($builder->expr()->sum($builder->expr()->cond(
+                    $builder->expr()->gte('$answer.score', 0),
+                    1,
+                    0
+                )))
+                ->field('success')
+                ->sum($builder->expr()->sum($builder->expr()->cond(
+                    $builder->expr()->gte('$answer.score', 1),
+                    1,
+                    0
+                )));
+
+        $data = $builder->execute()->toArray();
+
+        $average = 0;
+
+        if($data[0]['total']){
+            $average = round((($data[0]['success'] / $data[0]['total']) * 10), 2);
+
+        }
+
+        return $average;
+    }
 
     /**
      * @Route("/saveanswer/ajax", name="save_answer")

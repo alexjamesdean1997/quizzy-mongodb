@@ -45,7 +45,7 @@
                 Bravo !
             </div>
             <div class="average text">
-                La moyenne pour ce quiz est <span class="average-score"></span>
+                Votre moyenne pour cette catégorie est <span class="average-score">{{ average }}/10</span>
             </div>
             <div class="actions">
                 <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" class="btn">Rejouer</a>

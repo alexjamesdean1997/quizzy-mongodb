@@ -6,7 +6,6 @@ use App\Document\Users;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ODM\MongoDB\DocumentManager;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Security;
 
 class StatsController extends AbstractController
@@ -16,11 +15,9 @@ class StatsController extends AbstractController
      * @var Security
      */
     private $security;
-    private $passwordEncoder;
 
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder, Security $security)
+    public function __construct(Security $security)
     {
-        $this->passwordEncoder = $passwordEncoder;
         $this->security = $security;
     }
 
