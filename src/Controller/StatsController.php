@@ -51,15 +51,17 @@ class StatsController extends AbstractController
             'voyage'
         ];
 
-        $rankByCategory = [];
-        foreach ($categories as $category)
-        {
-            $rankByCategory[$category] = $this->getRankByCategory($category, $dm, $user);
-        }
-        $rankByCategory = $this->order_results($rankByCategory, 'all', 'asc');
-
         $scoreByCategory = $this->getScoreByCategory($dm, $user);
         $scoreByCategory = $this->order_results($scoreByCategory, 'all', 'desc');
+
+        $rankByCategory = [];
+        if($scoreByCategory){
+            foreach ($categories as $category)
+            {
+                $rankByCategory[$category] = $this->getRankByCategory($category, $dm, $user);
+            }
+            $rankByCategory = $this->order_results($rankByCategory, 'all', 'asc');
+        }
 
         return $this->render('stats.html.twig', [
             'rankings' => $rankByCategory,
@@ -75,10 +77,14 @@ class StatsController extends AbstractController
             asort($array);
         }
 
-        $temp = array($key => $array[$key]);
-        unset($array[$key]);
-        $array = $temp + $array;
-        return $array;
+        if(isset($array[$key])){
+            $temp = array($key => $array[$key]);
+            unset($array[$key]);
+            $array = $temp + $array;
+            return $array;
+        }
+
+        return false;
     }
 
     public function getRankByCategory($category, $dm, $user){

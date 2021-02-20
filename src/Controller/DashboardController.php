@@ -93,8 +93,13 @@ class DashboardController extends AbstractController
                 )));
 
         $result = $builder->execute()->toArray();
-        $totalScore = $result[0]["TotalScore"];
-        $totalSuccess = $result[0]["TotalSuccess"];
+        if($questions_answered){
+            $totalScore = $result[0]["TotalScore"];
+            $totalSuccess = $result[0]["TotalSuccess"];
+        }else{
+            $totalScore = 0;
+            $totalSuccess = 0;
+        }
 
         $rankBuilder = $dm->createAggregationBuilder(Users::class);
         $rankBuilder
