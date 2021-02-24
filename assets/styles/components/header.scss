@@ -13,6 +13,7 @@ header{
     box-shadow: 0 0 42px #00000012;
     display: flex;
     border-radius: 10px;
+    position: relative;
 
     .logo{
       height: 30px;
@@ -31,6 +32,19 @@ header{
       overflow-y: hidden;
       color: $blue;
       padding-top: 5px;
+    }
+
+    .header-action{
+      height: 42px;
+      width: 42px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #F6F7F9;
+      border-radius: 30px;
+      position: absolute;
+      top: 6px;
+      right: 15px;
     }
   }
 }

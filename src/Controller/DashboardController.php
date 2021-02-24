@@ -24,45 +24,12 @@ class DashboardController extends AbstractController
      */
     private $security;
     private $passwordEncoder;
-    private $faker;
+    //private $faker;
 
     public function __construct(UserPasswordEncoderInterface $passwordEncoder, Security $security)
     {
         $this->passwordEncoder = $passwordEncoder;
         $this->security = $security;
-    }
-
-    /**
-     * @Route("/download", name="download")
-     */
-    public function index()
-    {
-        return $this->render('home.html.twig', []);
-    }
-
-    /**
-     * @Route("/edit-data", name="data-edit")
-     */
-    public function editdata(DocumentManager $dm)
-    {
-        $questions = $dm->createQueryBuilder(Questions::class)
-            ->updateMany()
-            ->field('category')->equals('monde')
-            ->field('category')->set('voyage')
-            ->getQuery()
-            ->execute();
-
-        /*$count = 0;
-        foreach ($questions as $question){
-
-            if($question->getCategory() == "informatique" or $question->getCategory() == "internet"){
-                dump($question->getCategory());
-                $count = $count + 1;
-            }
-        }
-        dump($count);die();*/
-
-        return $this->render('home.html.twig', []);
     }
 
     /**
@@ -161,9 +128,10 @@ class DashboardController extends AbstractController
         ]);
     }
 
-    /**
+    // DEVELOPMENT ENVIRONMENT ONLY
+
+    /*
      * @Route("/savequestion/ajax", name="save_question")
-     */
     public function saveQuestion(Request $request, DocumentManager $dm)
     {
 
@@ -243,7 +211,7 @@ class DashboardController extends AbstractController
 
     /**
      * @Route("/loadusers", name="load_users")
-     */
+     *
     public function usersfixtures(DocumentManager $dm)
     {
         $this->faker = Factory::create();
@@ -269,7 +237,7 @@ class DashboardController extends AbstractController
 
     /**
      * @Route("/loadanswers", name="load_answers")
-     */
+     *
     public function answerfixtures(DocumentManager $dm)
     {
 
@@ -304,7 +272,7 @@ class DashboardController extends AbstractController
 
     /**
      * @Route("/updateanswers", name="update_answers")
-     */
+     *
     public function updateanswers(DocumentManager $dm)
     {
 
@@ -327,4 +295,37 @@ class DashboardController extends AbstractController
 
         ]);
     }
+
+    /**
+     * @Route("/download", name="download")
+     *
+    public function index()
+    {
+        return $this->render('home.html.twig', []);
+    }
+
+    /**
+     * @Route("/edit-data", name="data-edit")
+     *
+    public function editdata(DocumentManager $dm)
+    {
+        $questions = $dm->createQueryBuilder(Questions::class)
+            ->updateMany()
+            ->field('category')->equals('monde')
+            ->field('category')->set('voyage')
+            ->getQuery()
+            ->execute();
+
+        /*$count = 0;
+        foreach ($questions as $question){
+
+            if($question->getCategory() == "informatique" or $question->getCategory() == "internet"){
+                dump($question->getCategory());
+                $count = $count + 1;
+            }
+        }
+
+        return $this->render('home.html.twig', []);
+    }
+    */
 }

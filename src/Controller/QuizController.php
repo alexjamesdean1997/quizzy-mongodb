@@ -67,9 +67,7 @@ class QuizController extends AbstractController
     public function getCorrectAnswers(Request $request, DocumentManager $dm)
     {
         $questionRepository = $dm->getRepository(Questions::class);
-
         $questionId = json_decode($request->query->get('data'), true);
-
         $answer = $questionRepository->find($questionId)->getCorrectAnswer();
 
         $response = array(

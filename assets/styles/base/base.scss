@@ -13,3 +13,20 @@ body{
 main{
   padding: 0 16px;
 }
+
+
+.flex{
+  display: flex;
+}
+
+.j-center{
+  justify-content: center;
+}
+
+.j-evenly{
+  justify-content: space-evenly;
+}
+
+.a-items-center{
+  align-items: center;
+}
