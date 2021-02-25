@@ -1,0 +1,30 @@
+{% extends 'common.html.twig' %}
+
+{% block title %}Modifier vos informations{% endblock %}
+
+{% block body %}
+    <main class="container">
+        {% for flashError in app.flashes('verify_email_error') %}
+            <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+        {% endfor %}
+
+        <h1 class="title">Modifier vos informations</h1>
+
+        {{ form_start(form) }}
+        <div class="form">
+            <div class="form-row">
+                {{ form_row(form.first_name, {
+                    label: 'Prénom'
+                })  }}
+            </div>
+            <div class="form-row">
+                {{ form_row(form.last_name, {
+                    label: 'Nom'
+                })  }}
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn--fw">Valider</button>
+        {{ form_end(form) }}
+    </main>
+{% endblock %}
