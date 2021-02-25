@@ -1,0 +1,42 @@
+.form{
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 22px #00000009;
+  padding: 18px 12px 12px;
+  margin: 0 0 20px;
+
+  .form-row{
+    margin-bottom: 10px;
+
+    &.inline{
+      display: flex;
+
+      div{
+        display: flex;
+        align-items: center;
+        flex-direction: row-reverse;
+        margin-top: 10px;
+
+        label{
+          margin: 3px 0 0 4px;
+        }
+      }
+    }
+
+    label{
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    input[type="text"], input[type="email"], input[type="password"]{
+      display: block;
+      padding: 10px 20px 8px;
+      background-color: $light;
+      border: 1px solid #E0E0E0;
+      border-radius: 40px;
+      width: -webkit-fill-available;
+    }
+  }
+}
