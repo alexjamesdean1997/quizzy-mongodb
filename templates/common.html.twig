@@ -9,7 +9,7 @@
     <link rel="canonical" href="{{ app.request.uri }}">
 
     {% block stylesheets %}
-
+        {{ encore_entry_link_tags('app') }}
     {% endblock %}
 </head>
 <body>
@@ -80,4 +80,5 @@
     </footer>
 {% endblock %}
 {% block javascripts %}{% endblock %}
+{{ encore_entry_script_tags('app') }}
 </html>
