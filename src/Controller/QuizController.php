@@ -205,9 +205,8 @@ class QuizController extends AbstractController
 
         $average = 0;
 
-        if($data[0]['total']){
+        if(!empty($data) && $data[0]['total']){
             $average = round((($data[0]['success'] / $data[0]['total']) * 10), 2);
-
         }
 
         return $average;

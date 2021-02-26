@@ -21,7 +21,6 @@ class AccountController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-            //dump($form);die();
             $dm->persist($user);
             $dm->flush();
 
