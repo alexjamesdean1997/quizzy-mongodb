@@ -51,6 +51,21 @@ class StatsController extends AbstractController
         $scoreByCategory = $this->getScoreByCategory($dm, $user);
         $scoreByCategory = $this->order_results($scoreByCategory, 'all', 'desc');
 
+        $totalAnswersByCategory = $this->getTotalAnswersByCategory($dm, $user);
+        $totalCorrectAnswersByCategory = $this->getTotalCorrectAnswersByCategory($dm, $user);
+
+        $successRateByCategory = [];
+
+        foreach ($totalAnswersByCategory as $category => $totalAnswers)
+        {
+            if($totalAnswers > 0){
+                $successRateByCategory[$category] = round((($totalCorrectAnswersByCategory[$category] /$totalAnswers) * 100), 2);
+            }else{
+                $successRateByCategory[$category] = 0;
+            }
+        }
+        $successRateByCategory = $this->order_results($successRateByCategory, 'all', 'desc');
+
         $rankByCategory = [];
         if($scoreByCategory){
             foreach ($categories as $category)
@@ -62,7 +77,8 @@ class StatsController extends AbstractController
 
         return $this->render('stats.html.twig', [
             'rankings' => $rankByCategory,
-            'scores' => $scoreByCategory
+            'scores' => $scoreByCategory,
+            'sucess_rate' => $successRateByCategory
         ]);
     }
 
@@ -192,13 +208,13 @@ class StatsController extends AbstractController
                 )))
                 ->field('gastronomie')
                 ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
-                    $rankBuilder->expr()->eq('$answer.category', 'musique'),
+                    $rankBuilder->expr()->eq('$answer.category', 'gastronomie'),
                     '$answer.score',
                     0
                 )))
                 ->field('voyage')
                 ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
-                    $rankBuilder->expr()->eq('$answer.category', 'musique'),
+                    $rankBuilder->expr()->eq('$answer.category', 'voyage'),
                     '$answer.score',
                     0
                 )))
@@ -238,6 +254,314 @@ class StatsController extends AbstractController
                     '$answer.score',
                     0
                 )));
+
+        $score = [];
+
+        foreach ($rankBuilder->getAggregation() as $collec){
+            $score = $collec;
+            unset($score['_id']);
+        }
+
+        return $score;
+    }
+
+    public function getTotalAnswersByCategory($dm, $user){
+
+        $rankBuilder = $dm->createAggregationBuilder(Users::class);
+        $rankBuilder
+            ->match()
+            ->field('_id')
+            ->equals($user->getId())
+            ->unwind('$answer')
+            ->group()
+            ->field('_id')
+            ->expression('$_id')
+            ->field('all')
+            ->sum($rankBuilder->expr()->sum(1))
+            ->field('animaux')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'animaux'),
+                1,
+                0
+            )))
+            ->field('celebrites')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'celebrites'),
+                1,
+                0
+            )))
+            ->field('cinema')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'cinema'),
+                1,
+                0
+            )))
+            ->field('culture')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'culture'),
+                1,
+                0
+            )))
+            ->field('geographie')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'geographie'),
+                1,
+                0
+            )))
+            ->field('histoire')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'histoire'),
+                1,
+                0
+            )))
+            ->field('litterature')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'litterature'),
+                1,
+                0
+            )))
+            ->field('musique')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'musique'),
+                1,
+                0
+            )))
+            ->field('gastronomie')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'gastronomie'),
+                1,
+                0
+            )))
+            ->field('voyage')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'voyage'),
+                1,
+                0
+            )))
+            ->field('nature')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'nature'),
+                1,
+                0
+            )))
+            ->field('quotidien')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'quotidien'),
+                1,
+                0
+            )))
+            ->field('sciences')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'sciences'),
+                1,
+                0
+            )))
+            ->field('sports')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'sports'),
+                1,
+                0
+            )))
+            ->field('tech')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'tech'),
+                1,
+                0
+            )))
+            ->field('television')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'television'),
+                1,
+                0
+            )));
+
+        $score = [];
+
+        foreach ($rankBuilder->getAggregation() as $collec){
+            $score = $collec;
+            unset($score['_id']);
+        }
+
+        return $score;
+    }
+
+    public function getTotalCorrectAnswersByCategory($dm, $user){
+
+        $rankBuilder = $dm->createAggregationBuilder(Users::class);
+        $rankBuilder
+            ->match()
+            ->field('_id')
+            ->equals($user->getId())
+            ->unwind('$answer')
+            ->group()
+            ->field('_id')
+            ->expression('$_id')
+            ->field('all')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->gte('$answer.score', 1),
+                1,
+                0
+            )))
+            ->field('animaux')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'animaux'),
+                $rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                    $rankBuilder->expr()->gte('$answer.score', 1),
+                    1,
+                    0
+                )),
+                0
+            )))
+            ->field('celebrites')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'celebrites'),
+                $rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                    $rankBuilder->expr()->gte('$answer.score', 1),
+                    1,
+                    0
+                )),
+                0
+            )))
+            ->field('cinema')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'cinema'),
+                $rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                    $rankBuilder->expr()->gte('$answer.score', 1),
+                    1,
+                    0
+                )),
+                0
+            )))
+            ->field('culture')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'culture'),
+                $rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                    $rankBuilder->expr()->gte('$answer.score', 1),
+                    1,
+                    0
+                )),
+                0
+            )))
+            ->field('geographie')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'geographie'),
+                $rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                    $rankBuilder->expr()->gte('$answer.score', 1),
+                    1,
+                    0
+                )),
+                0
+            )))
+            ->field('histoire')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'histoire'),
+                $rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                    $rankBuilder->expr()->gte('$answer.score', 1),
+                    1,
+                    0
+                )),
+                0
+            )))
+            ->field('litterature')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'litterature'),
+                $rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                    $rankBuilder->expr()->gte('$answer.score', 1),
+                    1,
+                    0
+                )),
+                0
+            )))
+            ->field('musique')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'musique'),
+                $rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                    $rankBuilder->expr()->gte('$answer.score', 1),
+                    1,
+                    0
+                )),
+                0
+            )))
+            ->field('gastronomie')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'gastronomie'),
+                $rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                    $rankBuilder->expr()->gte('$answer.score', 1),
+                    1,
+                    0
+                )),
+                0
+            )))
+            ->field('voyage')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'voyage'),
+                $rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                    $rankBuilder->expr()->gte('$answer.score', 1),
+                    1,
+                    0
+                )),
+                0
+            )))
+            ->field('nature')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'nature'),
+                $rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                    $rankBuilder->expr()->gte('$answer.score', 1),
+                    1,
+                    0
+                )),
+                0
+            )))
+            ->field('quotidien')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'quotidien'),
+                $rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                    $rankBuilder->expr()->gte('$answer.score', 1),
+                    1,
+                    0
+                )),
+                0
+            )))
+            ->field('sciences')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'sciences'),
+                $rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                    $rankBuilder->expr()->gte('$answer.score', 1),
+                    1,
+                    0
+                )),
+                0
+            )))
+            ->field('sports')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'sports'),
+                $rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                    $rankBuilder->expr()->gte('$answer.score', 1),
+                    1,
+                    0
+                )),
+                0
+            )))
+            ->field('tech')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'tech'),
+                $rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                    $rankBuilder->expr()->gte('$answer.score', 1),
+                    1,
+                    0
+                )),
+                0
+            )))
+            ->field('television')
+            ->sum($rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                $rankBuilder->expr()->eq('$answer.category', 'television'),
+                $rankBuilder->expr()->sum($rankBuilder->expr()->cond(
+                    $rankBuilder->expr()->gte('$answer.score', 1),
+                    1,
+                    0
+                )),
+                0
+            )));
 
         $score = [];
 

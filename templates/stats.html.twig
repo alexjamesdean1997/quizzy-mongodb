@@ -75,7 +75,39 @@
             </div>
         {% endif %}
 
+        {% if sucess_rate %}
+            <h2 class="subtitle">Taux de réussite par catégorie</h2>
+            <div class="leaderboard collapsable collapsable--stats">
+                {% for key, score in sucess_rate %}
+                    {% set category = key %}
+                    {% if key == "all" %}
+                        {% set category = "général" %}
+                    {% elseif key == "celebrites" %}
+                        {% set category = "célébrités" %}
+                    {% elseif key == "geographie" %}
+                        {% set category = "géographie" %}
+                    {% elseif key == "litterature" %}
+                        {% set category = "littérature" %}
+                    {% elseif key == "television" %}
+                        {% set category = "télévision" %}
+                    {% endif %}
+                    {% set icon = 'build/' ~ key ~ '-color.svg' %}
+                    <div class="leader">
+                        <div class="category-icon">
+                            <img src="{{ asset(icon) }}" alt="{{ key }} icon">
+                        </div>
 
+                        <div class="name name--category">{{ category }}</div>
+                        <div class="rank rank--category">{{ score }}<span>%</span></div>
+                    </div>
+                {% endfor %}
+                <div class="collapser">
+                    <img src="{{ asset('build/collapse.svg') }}" alt="collapse icon">
+                    <span class="more-span">Show more</span>
+                    <span class="less-span">Show less</span>
+                </div>
+            </div>
+        {% endif %}
 
     </main>
 {% endblock %}
