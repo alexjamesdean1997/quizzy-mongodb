@@ -109,5 +109,73 @@
             </div>
         {% endif %}
 
+        {% if categories_played %}
+            <h2 class="subtitle">Catégories préféré</h2>
+            <div id="favoriteCategories" class="leaderboard">
+
+            </div>
+        {% endif %}
+
     </main>
+{% endblock %}
+{% block javascripts %}
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/dataviz.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+
+    <script>
+        // Themes begin
+        am4core.useTheme(am4themes_dataviz);
+        am4core.useTheme(am4themes_animated);
+        // Themes end
+
+        // Create chart instance
+        var chart = am4core.create("favoriteCategories", am4charts.PieChart);
+
+        // Add data
+        chart.data = [
+            {% for category, plays in categories_played %}
+                {
+                    "category": "{{ category }}",
+                    "plays": {{ plays }}
+                },
+            {% endfor %}
+        ];
+
+        // Add and configure Series
+        var pieSeries = chart.series.push(new am4charts.PieSeries());
+        pieSeries.dataFields.value = "plays";
+        pieSeries.dataFields.category = "category";
+        pieSeries.slices.template.stroke = am4core.color("#fff");
+        pieSeries.slices.template.strokeOpacity = 1;
+        pieSeries.alignLabels = false;
+
+        pieSeries.ticks.template.events.on("ready", hideSmall);
+        pieSeries.ticks.template.events.on("visibilitychanged", hideSmall);
+        pieSeries.labels.template.events.on("ready", hideSmall);
+        pieSeries.labels.template.events.on("visibilitychanged", hideSmall);
+
+        // This creates initial animation
+        pieSeries.hiddenState.properties.opacity = 1;
+        pieSeries.hiddenState.properties.endAngle = -90;
+        pieSeries.hiddenState.properties.startAngle = -90;
+
+        function hideSmall(ev) {
+            if (ev.target.dataItem.values.value.percent < 5) {
+                ev.target.hide();
+            }
+            else {
+                ev.target.show();
+            }
+        }
+
+        pieSeries.labels.template.disabled = true;
+        pieSeries.ticks.template.disabled = true;
+
+        chart.legend = new am4charts.Legend();
+        chart.legend.position = "bottom";
+
+        chart.hiddenState.properties.radius = am4core.percent(0);
+    </script>
 {% endblock %}
