@@ -13,6 +13,11 @@
         {{ form_start(form) }}
         <div class="form">
             <div class="form-row">
+                {{ form_row(form.email, {
+                    label: 'Email'
+                })  }}
+            </div>
+            <div class="form-row">
                 {{ form_row(form.first_name, {
                     label: 'Prénom'
                 })  }}
@@ -22,6 +27,18 @@
                     label: 'Nom'
                 })  }}
             </div>
+            <div>Avatar</div>
+            <div class="avatar-selection">
+                {% for key, avatar in form.avatar.children %}
+                    <div>
+                        <label>
+                            {{ form_widget(avatar) }}
+                            <img src="{{ asset('build/avatar-' ~ (key + 1) ~ '.jpg') }}" alt="avatar {{ key }}" />
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+
         </div>
 
         <button type="submit" class="btn btn--fw">Valider</button>

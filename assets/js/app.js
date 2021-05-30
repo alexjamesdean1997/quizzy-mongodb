@@ -85,7 +85,22 @@ $(document).ready(function(){
             }
         });
     });
+
+    // remove amchart logo on pie chart
+    removeAmchartLogo();
+    $( "#favoriteCategories" ).click(function() {
+        removeAmchartLogo();
+    });
+
 });
+
+function removeAmchartLogo(){
+    $( "g" ).each(function( index ) {
+        if($(this).attr("aria-labelledby") === "id-66-title"){
+            $(this).remove();
+        }
+    });
+}
 
 function getQuestion() {
 

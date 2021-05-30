@@ -110,8 +110,8 @@
         {% endif %}
 
         {% if categories_played %}
-            <h2 class="subtitle">Catégories préféré</h2>
-            <div id="favoriteCategories" class="leaderboard">
+            <h2 class="subtitle">Catégories préférées</h2>
+            <div id="favoriteCategories" class="leaderboard pie-chart">
 
             </div>
         {% endif %}
@@ -123,6 +123,7 @@
     <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/themes/dataviz.js"></script>
     <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/plugins/sliceGrouper.js"></script>
 
     <script>
         // Themes begin
@@ -135,11 +136,25 @@
 
         // Add data
         chart.data = [
-            {% for category, plays in categories_played %}
-                {
-                    "category": "{{ category }}",
-                    "plays": {{ plays }}
-                },
+            {% for key, plays in categories_played %}
+                {% set category = key %}
+                {% if key == "all" %}
+                    {% set category = "général" %}
+                {% elseif key == "celebrites" %}
+                    {% set category = "célébrités" %}
+                {% elseif key == "geographie" %}
+                    {% set category = "géographie" %}
+                {% elseif key == "litterature" %}
+                    {% set category = "littérature" %}
+                {% elseif key == "television" %}
+                    {% set category = "télévision" %}
+                {% endif %}
+                {% if plays > 0 %}
+                    {
+                        "category": "{{ category }}",
+                        "plays": {{ plays }}
+                    },
+                {% endif %}
             {% endfor %}
         ];
 
@@ -147,28 +162,15 @@
         var pieSeries = chart.series.push(new am4charts.PieSeries());
         pieSeries.dataFields.value = "plays";
         pieSeries.dataFields.category = "category";
-        pieSeries.slices.template.stroke = am4core.color("#fff");
-        pieSeries.slices.template.strokeOpacity = 1;
-        pieSeries.alignLabels = false;
 
-        pieSeries.ticks.template.events.on("ready", hideSmall);
-        pieSeries.ticks.template.events.on("visibilitychanged", hideSmall);
-        pieSeries.labels.template.events.on("ready", hideSmall);
-        pieSeries.labels.template.events.on("visibilitychanged", hideSmall);
-
+        var grouper = pieSeries.plugins.push(new am4plugins_sliceGrouper.SliceGrouper());
+        grouper.threshold = 8;
+        grouper.groupName = "autre";
+        grouper.clickBehavior = "break";
         // This creates initial animation
         pieSeries.hiddenState.properties.opacity = 1;
         pieSeries.hiddenState.properties.endAngle = -90;
         pieSeries.hiddenState.properties.startAngle = -90;
-
-        function hideSmall(ev) {
-            if (ev.target.dataItem.values.value.percent < 5) {
-                ev.target.hide();
-            }
-            else {
-                ev.target.show();
-            }
-        }
 
         pieSeries.labels.template.disabled = true;
         pieSeries.ticks.template.disabled = true;
@@ -176,6 +178,24 @@
         chart.legend = new am4charts.Legend();
         chart.legend.position = "bottom";
 
-        chart.hiddenState.properties.radius = am4core.percent(0);
+        pieSeries.colors.list = [
+            am4core.color("#92374D"),
+            am4core.color("#315659"),
+            am4core.color("#F03A47"),
+            am4core.color("#7796CB"),
+            am4core.color("#16BC6F"),
+            am4core.color("#916953"),
+            am4core.color("#2C6E49"),
+            am4core.color("#4D4CAC"),
+            am4core.color("#81A684"),
+            am4core.color("#FB6D3A"),
+            am4core.color("#393450"),
+            am4core.color("#F49F0A"),
+            am4core.color("#12DACB"),
+            am4core.color("#FF808B"),
+            am4core.color("#FCD561"),
+            am4core.color("#81C3D7"),
+            am4core.color("#0100FF"),
+        ];
     </script>
 {% endblock %}

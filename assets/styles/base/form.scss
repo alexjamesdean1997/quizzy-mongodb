@@ -40,3 +40,36 @@
     }
   }
 }
+
+.avatar-selection{
+  display: flex;
+  flex-wrap: wrap;
+  padding-bottom: 10px;
+
+  input {
+    display:none;
+  }
+
+  input:checked + img{
+    border: 3px solid $blue;
+  }
+
+  label{
+    display: block;
+    flex-grow: 1;
+    cursor: pointer;
+    margin-right: 20px;
+    border-radius: 80px;
+    height: 80px;
+    width: 80px;
+
+    img {
+      border: 3px solid transparent;
+      border-radius: 80px;
+      height: 80px;
+      width: 80px;
+      object-fit: cover;
+    }
+
+  }
+}
