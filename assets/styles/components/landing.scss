@@ -1,0 +1,30 @@
+.row{
+
+}
+
+.phones{
+  padding: 40px 20px 20px;
+  display: flex;
+  justify-content: center;
+
+  .phone{
+    width: 40%;
+    max-width: 420px;
+    min-width: 200px;
+
+    &--left{
+      position: relative;
+      z-index: 2;
+      margin-right: -10%;
+      margin-top: 9%;
+    }
+
+    &--right{
+      margin-left: -10%;
+    }
+
+    img{
+      width: 100%;
+    }
+  }
+}
