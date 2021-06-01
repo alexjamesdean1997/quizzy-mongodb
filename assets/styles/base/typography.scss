@@ -69,6 +69,10 @@ body{
   font-size: 1rem;
   color: $dark;
 
+  &--medium{
+    font-size: 1.2rem;
+  }
+
   &--bold{
     font-weight: 600;
   }

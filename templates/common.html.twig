@@ -32,46 +32,48 @@
     </div>
 </header>
 
-<nav class="mobile-menu">
-    <ul class="mobile-menu-wrapper">
-        <li>
-            <a href="/dashboard">
-                {% if current_path == 'dashboard' %}
-                    <img src="{{ asset('build/dashboard-active.svg') }}" alt="dashboard icon">
-                {% else %}
-                    <img src="{{ asset('build/dashboard.svg') }}" alt="dashboard icon">
-                {% endif %}
-            </a>
-        </li>
-        <li>
-            <a href="/quiz">
-                {% if current_path == 'quiz' %}
-                    <img src="{{ asset('build/quiz-active.svg') }}" alt="quiz icon">
-                {% else %}
-                    <img src="{{ asset('build/quiz.svg') }}" alt="quiz icon">
-                {% endif %}
-            </a>
-        </li>
-        <li>
-            <a href="/stats">
-                {% if current_path == 'stats' %}
-                    <img src="{{ asset('build/stats-active.svg') }}" alt="stats icon">
-                {% else %}
-                    <img src="{{ asset('build/stats.svg') }}" alt="stats icon">
-                {% endif %}
-            </a>
-        </li>
-        <li>
-            <a href="/leaderboard">
-                {% if current_path == 'leaderboard' %}
-                    <img src="{{ asset('build/leaderboard-active.svg') }}" alt="leaderboard icon">
-                {% else %}
-                    <img src="{{ asset('build/leaderboard.svg') }}" alt="leaderboard icon">
-                {% endif %}
-            </a>
-        </li>
-    </ul>
-</nav>
+{% if current_path != 'home' and current_path != 'app_register' and current_path != 'app_login' %}
+    <nav class="mobile-menu">
+        <ul class="mobile-menu-wrapper">
+            <li>
+                <a href="/dashboard">
+                    {% if current_path == 'dashboard' %}
+                        <img src="{{ asset('build/dashboard-active.svg') }}" alt="dashboard icon">
+                    {% else %}
+                        <img src="{{ asset('build/dashboard.svg') }}" alt="dashboard icon">
+                    {% endif %}
+                </a>
+            </li>
+            <li>
+                <a href="/quiz">
+                    {% if current_path == 'quiz' %}
+                        <img src="{{ asset('build/quiz-active.svg') }}" alt="quiz icon">
+                    {% else %}
+                        <img src="{{ asset('build/quiz.svg') }}" alt="quiz icon">
+                    {% endif %}
+                </a>
+            </li>
+            <li>
+                <a href="/stats">
+                    {% if current_path == 'stats' %}
+                        <img src="{{ asset('build/stats-active.svg') }}" alt="stats icon">
+                    {% else %}
+                        <img src="{{ asset('build/stats.svg') }}" alt="stats icon">
+                    {% endif %}
+                </a>
+            </li>
+            <li>
+                <a href="/leaderboard">
+                    {% if current_path == 'leaderboard' %}
+                        <img src="{{ asset('build/leaderboard-active.svg') }}" alt="leaderboard icon">
+                    {% else %}
+                        <img src="{{ asset('build/leaderboard.svg') }}" alt="leaderboard icon">
+                    {% endif %}
+                </a>
+            </li>
+        </ul>
+    </nav>
+{% endif %}
 {% block body %}{% endblock %}
 {% block footer %}
     <footer class="container">

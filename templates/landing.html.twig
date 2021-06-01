@@ -1,25 +1,28 @@
 {% extends 'common.html.twig' %}
 {% block body %}
     <main class="container">
-        <h1 class="title title--big text-center">Quizzy</h1>
-        <div class="subtitle text-center">Choisissez parmi une large variété de thématique et tentez de paraître dans le top 10</div>
-        <div class="flex j-evenly a-items-center pt-4">
-            <a class="btn" href="/register">Créer un compte</a>
+        <div class="row row--small">
+            <h1 class="title title--big text-center">Quizzy</h1>
+            <div class="subtitle text-center">Choisissez parmi une large variété de thématique et tentez de paraître dans le top 10</div>
+            <div class="flex j-evenly a-items-center pt-2">
+                <a class="btn" href="/register">Créer un compte</a>
+            </div>
         </div>
-        <div class="row">
-            <div class="phones">
-                <div class="phone phone--left">
-                    <img src="{{ asset('build/phone-left.png') }}" alt="">
-                </div>
-                <div class="phone phone--right">
-                    <img src="{{ asset('build/phone-right.png') }}" alt="">
-                </div>
+        <div class="phones">
+            <div class="phone phone--left">
+                <img src="{{ asset('build/phone-left.png') }}" alt="">
+            </div>
+            <div class="phone phone--right">
+                <img src="{{ asset('build/phone-right.png') }}" alt="">
             </div>
         </div>
         <div class="row">
-            <h2 class="title text-center">Plus de 7000 questions</h2>
-            <div class="text text-center">Testez vos connaissances générales sur
+            <h2 class="title text-center">Plus de 7000 questions !</h2>
+            <div class="text text--medium text-center">Testez vos connaissances générales sur
                 des milliers de quiz </div>
+            <div class="pt-2 quiz-game">
+                {% include 'question.html.twig' with questions %}
+            </div>
         </div>
     </main>
 {% endblock %}

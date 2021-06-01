@@ -150,14 +150,22 @@ class QuizController extends AbstractController
      */
     public function getAverage(Request $request, DocumentManager $dm)
     {
-        $data = json_decode($request->query->get('data'), true);
-        $category = $data['category'];
-        $categoryAverage = $this->userCategoryAverage($dm, $category);
+        if($this->getUser()) {
+            $data = json_decode($request->query->get('data'), true);
+            $category = $data['category'];
+            $categoryAverage = $this->userCategoryAverage($dm, $category);
 
-        $response = array(
-            "code" => 200,
-            "average" => $categoryAverage
-        );
+            $response = array(
+                "code" => 200,
+                "average" => $categoryAverage
+            );
+        }else{
+            $message = 'user not logged in';
+            $response = array(
+                "code" => 200,
+                "message" => $message
+            );
+        }
 
         return new JsonResponse($response);
     }
@@ -217,29 +225,40 @@ class QuizController extends AbstractController
      */
     public function saveAnswer(Request $request, DocumentManager $dm)
     {
-        $data = json_decode($request->query->get('data'), true);
-        $user = $this->security->getUser();
-        $question = $data['questionId'];
-        $category = $data['category'];
-        $score = $data['score'];
+        if($this->getUser()){
+            $data = json_decode($request->query->get('data'), true);
+            $user = $this->security->getUser();
+            $question = $data['questionId'];
+            $category = $data['category'];
+            $score = $data['score'];
 
-        $answer = new Answer();
+            $answer = new Answer();
 
-        $answer->setQuestionId($question);
-        $answer->setScore($score);
-        $answer->setCategory($category);
-        $answer->setDate(new \DateTime());
-        $user->addAnswer($answer);
+            $answer->setQuestionId($question);
+            $answer->setScore($score);
+            $answer->setCategory($category);
+            $answer->setDate(new \DateTime());
+            $user->addAnswer($answer);
 
-        $dm->persist($user);
-        $dm->flush();
+            $dm->persist($user);
+            $dm->flush();
 
-        $message = 'saved answer';
+            $message = 'saved answer';
 
-        $response = array(
-            "code" => 200,
-            "message" => $message
-        );
+            $response = array(
+                "code" => 200,
+                "message" => $message
+            );
+
+        }else{
+            $message = 'user not logged in';
+            $response = array(
+                "code" => 200,
+                "message" => $message
+            );
+        }
+
         return new JsonResponse($response);
+
     }
 }

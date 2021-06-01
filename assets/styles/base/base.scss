@@ -8,6 +8,7 @@ body{
   background-color: $light;
   padding: 80px 0;
   -webkit-font-smoothing : antialiased;
+  overflow-x: hidden;
 }
 
 main{
@@ -17,6 +18,10 @@ main{
 .row{
   max-width: 1100px;
   margin: auto;
+
+  &--small{
+    max-width: 600px;
+  }
 }
 
 

@@ -16,6 +16,14 @@ $(document).ready(function(){
         }, 61100);
     }
 
+    var isRoot = location.pathname == "/";
+
+    let maxQuestions = 10
+
+    if(isRoot){
+        maxQuestions = 3
+    }
+
     if($('.quiz-game').length){
         $('.question-wrapper').hide();
         $('.question-wrapper[data-question="1"]').show();
@@ -35,7 +43,7 @@ $(document).ready(function(){
             $('.question-wrapper[data-question="' + currentQuestion + '"]').remove();
             currentQuestion = currentQuestion + 1;
 
-            if(currentQuestion <= 10){
+            if(currentQuestion <= maxQuestions){
                 let category = $('.question-wrapper[data-question="' + currentQuestion + '"]').data('difficulty');
                 $('.random-difficulty').text(category);
                 $('.question-wrapper[data-question="' + currentQuestion + '"]').show();

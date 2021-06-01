@@ -1,0 +1,40 @@
+<div class="questions">
+    {% for question in questions %}
+        <div class="question-wrapper" data-qoid="{{ question.id }}" data-qid="{{ question.qid }}" data-difficulty="{{ question.difficulty }}" data-category="{{ question.category }}" data-question="{{ loop.index }}">
+            <div class="steps"><span class="step">{{ loop.index }}</span> of 3</div>
+            <div class="theme text text--bold">{{ question.theme }}</div>
+            <div class="question">{{ question.question }}</div>
+            <ul class="choices">
+                {% for choice in question.choices %}
+                    <li class="choice">
+                        <button class="quiz-choice" data-value="{{ choice }}">
+                            {% if loop.index == 1 %}
+                                A.
+                            {% elseif loop.index == 2 %}
+                                B.
+                            {% elseif loop.index == 3 %}
+                                C.
+                            {% elseif loop.index == 4 %}
+                                D.
+                            {% endif %}
+                            <span>{{ choice }}</span>
+                        </button>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+    <button id="submitQuiz" class="btn btn--fw" disabled>Valider</button>
+</div>
+<div class="summary">
+    <div class="score">
+        <span class="result title title--big">0</span><span class="total">/10</span>
+    </div>
+    <div class="comment title">
+       Vous avez eu
+    </div>
+    <div class="actions">
+        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" class="btn">Rejouer</a>
+        <a href="/quiz" class="btn btn--outline">Choisir une catégorie</a>
+    </div>
+</div>
