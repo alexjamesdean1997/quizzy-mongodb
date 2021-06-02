@@ -7,6 +7,9 @@
     <meta name="description" content="{% block description %}Quiz progressive web app{% endblock %}"/>
     <link rel="icon" type="image/jpg" href="{{ asset('build/favicon.png') }}" />
     <link rel="canonical" href="{{ app.request.uri }}">
+    <link rel="manifest" href="{{ asset('build/manifest.webmanifest') }}">
+    <link rel="apple-touch-icon" href="{{ asset('build/logo-quizzy.png') }}">
+    <meta name="theme-color" content="#0100FF"/>
 
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
@@ -81,5 +84,6 @@
 {% endblock %}
 {% block javascripts %}{% endblock %}
 {{ encore_entry_script_tags('app') }}
+<script src="/service-worker.js" defer=""></script>
 </body>
 </html>

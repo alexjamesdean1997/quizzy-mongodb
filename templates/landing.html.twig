@@ -8,20 +8,36 @@
                 <a class="btn" href="/register">Créer un compte</a>
             </div>
         </div>
-        <div class="phones">
-            <div class="phone phone--left">
-                <img src="{{ asset('build/phone-left.png') }}" alt="">
-            </div>
-            <div class="phone phone--right">
-                <img src="{{ asset('build/phone-right.png') }}" alt="">
+        <div class="row pt-2">
+            <div class="phones">
+                <div class="phone phone--left">
+                    <img src="{{ asset('build/phone-left.png') }}" alt="">
+                </div>
+                <div class="phone phone--right">
+                    <img src="{{ asset('build/phone-right.png') }}" alt="">
+                </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row row--small pt-2">
             <h2 class="title text-center">Plus de 7000 questions !</h2>
-            <div class="text text--medium text-center">Testez vos connaissances générales sur
-                des milliers de quiz </div>
-            <div class="pt-2 quiz-game">
+            <div class="text text--medium text-center">
+                De nombreuses questions sont régulièrement ajoutées 
+                au jeu pour augmenter encore un peu plus la compétition.
+                L'intégralité des questions proposées par Quizzy provient 
+                du projet <a href="https://www.openquizzdb.org/">OpenQuizzDB</a>.
+            </div>
+        </div>
+        <div class="row row--small pt-6">
+            <h2 class="title text-center">On se fait un Quizzy ?</h2>
+            <div class="pt-1 quiz-game">
                 {% include 'question.html.twig' with questions %}
+            </div>
+        </div>
+        <div class="row row--small pt-6">
+            <h2 class="title text-center">Téléchargez Quizzy</h2>
+            <div class="text text--medium text-center">Installez Quizzy pour jouer n'importe où, n'importe quand </div>
+            <div class="flex j-evenly a-items-center pt-2">
+                <a class="btn" href="/register">Télécharger</a>
             </div>
         </div>
     </main>

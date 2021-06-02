@@ -25,6 +25,12 @@ class HomeController extends AbstractController
             $sessionQuestions[] = $questions[$item];
         }
 
+        foreach($sessionQuestions as $sessionQuestion) {
+            $choices = $sessionQuestion->getChoices();
+            shuffle($choices);
+            $sessionQuestion->setChoices($choices);
+        }
+
         return $this->render('landing.html.twig', [
             "questions" => $sessionQuestions
         ]);

@@ -48,7 +48,7 @@ body{
 
 .subtitle{
   font-family: 'Grold', sans-serif;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 22px;
   padding: 12px 0;
   margin: 0;
@@ -66,6 +66,7 @@ body{
 
 .text{
   font-family: 'Grold', sans-serif;
+
   font-size: 1rem;
   color: $dark;
 
@@ -76,4 +77,8 @@ body{
   &--bold{
     font-weight: 600;
   }
+}
+
+a{
+  text-decoration: none;
 }

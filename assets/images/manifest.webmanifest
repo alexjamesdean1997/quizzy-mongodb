@@ -1,0 +1,23 @@
+{
+  "short_name": "Quizzy",
+  "name": "Quizzy",
+  "description": "the best quiz app",
+  "icons": [
+    {
+      "src": "/build/logo-quizzy512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src":"/build/logo-quizzy192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": "/dashboard",
+  "background_color": "#0100FF",
+  "theme_color": "#0100FF",
+  "display": "fullscreen"
+}
