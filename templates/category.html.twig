@@ -38,14 +38,14 @@
             <button id="submitQuiz" class="btn btn--fw" disabled>Valider</button>
         </div>
         <div class="summary">
-            <div class="score">
-                <span class="result title title--big">0</span><span class="total">/10</span>
-            </div>
             <div class="comment title">
-                Bravo !
+                Tu as obtenu
             </div>
-            <div class="average text">
-                Votre moyenne pour cette catégorie est <span class="average-score">{{ average }}/10</span>
+            <div class="score">
+                <span class="result title title--big">0</span><span class="total"> / 10</span>
+            </div>
+            <div class="average text text-center">
+                Ta moyenne pour cette catégorie est <span class="average-score">{{ average }} / 10</span>
             </div>
             <div class="actions">
                 <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" class="btn">Rejouer</a>

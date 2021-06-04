@@ -1,7 +1,7 @@
 <div class="questions">
     {% for question in questions %}
         <div class="question-wrapper" data-qoid="{{ question.id }}" data-qid="{{ question.qid }}" data-difficulty="{{ question.difficulty }}" data-category="{{ question.category }}" data-question="{{ loop.index }}">
-            <div class="steps"><span class="step">{{ loop.index }}</span> of 3</div>
+            <div class="steps"><span class="step">{{ loop.index }}</span> / 3</div>
             <div class="theme text text--bold">{{ question.theme }}</div>
             <div class="question">{{ question.question }}</div>
             <ul class="choices">
@@ -31,7 +31,7 @@
         tu as obtenu
     </div>
     <div class="score">
-        <span class="result title title--big">0</span><span class="total">/3</span>
+        <span class="result title title--big">0</span><span class="total"> / 3</span>
     </div>
     <div class="actions">
         <a href="/register" class="btn">Plus de question !</a>
