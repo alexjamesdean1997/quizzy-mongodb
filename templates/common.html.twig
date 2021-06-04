@@ -19,10 +19,10 @@
 {% set current_path = app.request.get('_route') %}
 <header>
     <div class="header-wrapper">
-        <div class="logo">
+        <a href="/" class="logo">
             <img src="{{ asset('build/logo-quizzy.png') }}" alt="Quizzy logo">
-        </div>
-        <div class="quizzy">Quizzy</div>
+            <div class="logo-name">Quizzy</div>
+        </a>
         {% if app.user %}
             <a class="header-action" href="/logout">
                 <img src="{{ asset('build/log-out.svg') }}" alt="logout icon">

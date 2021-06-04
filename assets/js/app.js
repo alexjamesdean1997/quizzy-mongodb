@@ -23,6 +23,20 @@ if ('serviceWorker' in navigator) {
 let currentQuestion = 1;
 let correctAnswers = 0;
 
+
+const btnAdd = document.getElementById("installApp")
+
+if (btnAdd) {
+    let storedInstallEvent = null // Store to keep triggerable event after a first dismiss
+    window.addEventListener('beforeinstallprompt', e => {
+        e.preventDefault()
+        storedInstallEvent = e
+        btnAdd.addEventListener('click', function () {
+            storedInstallEvent.prompt()
+        })
+    })
+}
+
 $(document).ready(function(){
 
     if (window.location.href.indexOf("download") > -1) {
