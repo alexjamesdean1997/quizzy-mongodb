@@ -69,8 +69,8 @@ const update = request =>
 // general strategy when making a request (eg if online try to fetch it
 // from the network with a timeout, if something fails serve from cache)
 self.addEventListener('fetch', evt => {
-    evt.respondWith(
+    /*evt.respondWith(
         fromNetwork(evt.request, 10000).catch(() => fromCache(evt.request))
     );
-    evt.waitUntil(update(evt.request));
+    evt.waitUntil(update(evt.request));*/
 });
