@@ -1,6 +1,4 @@
 import '../styles/style.scss';
-// apiKey
-//import secret from "./secret";
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
@@ -50,7 +48,7 @@ $(document).ready(function(){
 
     var isRoot = location.pathname == "/";
 
-    let maxQuestions = 10
+    let maxQuestions = 10;
 
     if(isRoot){
         maxQuestions = 3
@@ -182,8 +180,6 @@ function saveQuestion(data) {
         async:      true,
 
         success: function(data, status) {
-            console.log(data.message);
-            console.log(data.categories);
 
             $('.categories-list').empty();
             for (const [key, value] of Object.entries(data.categories)) {
