@@ -3,7 +3,7 @@
 Quizzy is a quiz game divided into several categories to challenge your knowledge!
 This Progressive web app is based on Symfony and MongoDB.
 
-##Installation
+## Installation
 
 1. clone the project
 ```
