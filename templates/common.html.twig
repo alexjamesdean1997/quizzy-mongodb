@@ -23,19 +23,19 @@
             <img src="{{ asset('build/logo-quizzy.png') }}" alt="Quizzy logo">
         </div>
         <div class="quizzy">Quizzy</div>
-        {% if current_path == 'home' or current_path == 'app_register' or current_path == 'app_login' %}
-            <a class="header-action" href="/login">
-                <img src="{{ asset('build/log-in.svg') }}" alt="login icon">
-            </a>
-        {% else %}
+        {% if app.user %}
             <a class="header-action" href="/logout">
                 <img src="{{ asset('build/log-out.svg') }}" alt="logout icon">
+            </a>
+        {% else %}
+            <a class="header-action" href="/login">
+                <img src="{{ asset('build/log-in.svg') }}" alt="login icon">
             </a>
         {% endif %}
     </div>
 </header>
 
-{% if current_path != 'home' and current_path != 'app_register' and current_path != 'app_login' %}
+{% if app.user %}
     <nav class="mobile-menu">
         <ul class="mobile-menu-wrapper">
             <li>
