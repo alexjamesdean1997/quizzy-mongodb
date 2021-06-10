@@ -228,8 +228,6 @@ function saveAnswer(questionId, category, score) {
         score : score
     };
 
-    console.log('save answer');
-
     $.ajax({
         url:        '/saveanswer/ajax?data=' + JSON.stringify(data),
         type:       'POST',
@@ -237,7 +235,6 @@ function saveAnswer(questionId, category, score) {
         async:      true,
 
         success: function(data, status) {
-            console.log(data);
             updateAverage(category)
         },
         error : function(xhr, textStatus, errorThrown) {
@@ -251,8 +248,6 @@ function updateAverage(category) {
     let data = {
         category : category
     };
-
-    console.log('update average');
 
     $.ajax({
         url:        '/getaverage?data=' + JSON.stringify(data),
@@ -271,21 +266,16 @@ function updateAverage(category) {
 }
 
 function manageResult(correctAnswer, questionId, answer){
-    console.log('MANAGER');
-    console.log({correctAnswer});
-    console.log({answer});
     let difficulty = $('.question-wrapper[data-question="' + currentQuestion + '"]').data('difficulty');
     let category = $('.question-wrapper[data-question="' + currentQuestion + '"]').data('category');
     let score = 0;
 
     if(answer.toString() === correctAnswer.toString()){
-        console.log('correct');
         $('.quiz-choice.selected').addClass('correct');
         correctAnswers = correctAnswers + 1;
         $('.summary .score .result').text(correctAnswers);
         score = getScore(difficulty);
     }else{
-        console.log('wrong');
         $('.quiz-choice.selected').addClass('wrong');
         $('.question-wrapper[data-question="' + currentQuestion + '"] .quiz-choice[data-value="' + correctAnswer + '"]').addClass('correct');
     }
