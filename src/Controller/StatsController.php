@@ -78,8 +78,6 @@ class StatsController extends AbstractController
         $categoriesPlayed = $this->getMostPlayedCategories($dm, $user);
         $categoriesPlayed = $this->order_results($categoriesPlayed, 'all', 'asc');
 
-        //dump($categoriesPlayed);die();
-
         return $this->render('stats.html.twig', [
             'rankings' => $rankByCategory,
             'scores' => $scoreByCategory,

@@ -12,7 +12,7 @@
         <div class="questions">
             {% for question in questions %}
                 <div class="question-wrapper" data-qoid="{{ question.id }}" data-qid="{{ question.qid }}" data-difficulty="{{ question.difficulty }}" data-category="{{ question.category }}" data-question="{{ loop.index }}">
-                    <div class="steps"><span class="step">{{ loop.index }}</span> of 10</div>
+                    <div class="steps"><span class="step">{{ loop.index }}</span> / 10</div>
                     <div class="theme text text--bold">{{ question.theme }}</div>
                     <div class="question">{{ question.question }}</div>
                     <ul class="choices">
@@ -38,14 +38,14 @@
             <button id="submitQuiz" class="btn btn--fw" disabled>Valider</button>
         </div>
         <div class="summary">
-            <div class="score">
-                <span class="result title title--big">0</span><span class="total">/10</span>
-            </div>
             <div class="comment title">
-                Bravo !
+                Tu as obtenu
             </div>
-            <div class="average text">
-                Votre moyenne pour cette catégorie est <span class="average-score">{{ average }}/10</span>
+            <div class="score">
+                <span class="result title title--big">0</span><span class="total"> / 10</span>
+            </div>
+            <div class="average text text-center">
+                Ta moyenne pour cette catégorie est <span class="average-score">{{ average }} / 10</span>
             </div>
             <div class="actions">
                 <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}" class="btn">Rejouer</a>
